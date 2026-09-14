@@ -16,12 +16,14 @@
         <h1 class="mb-3"><i class="bi bi-house-heart"></i> Paróquia Nossa Senhora da Glória</h1>
         <p class="lead mb-1">Igreja Católica Ucraniana · Rito Bizantino · Pitanga/PR</p>
         <p class="lead mb-4">Bem-vindo à nossa comunidade de fé desde 1952</p>
-        <a href="{{ route('missas.index') }}" class="btn btn-hero me-2">
-            <i class="bi bi-clock"></i> Horários de missas
-        </a>
-        <a href="{{ route('sobre') }}" class="btn btn-outline-light">
-            <i class="bi bi-info-circle"></i> Conheça a paróquia
-        </a>
+        <div class="hero-acoes">
+            <a href="{{ route('missas.index') }}" class="btn btn-hero">
+                <i class="bi bi-clock"></i> Horários de missas
+            </a>
+            <a href="{{ route('sobre') }}" class="btn btn-outline-light">
+                <i class="bi bi-info-circle"></i> Conheça a paróquia
+            </a>
+        </div>
     </div>
 </section>
 @endsection
@@ -45,7 +47,7 @@
 
 {{-- Faixa "Próxima missa" --}}
 @if($proximaMissa)
-    <div class="proxima-missa d-flex flex-wrap align-items-center gap-3 mb-3">
+    <div class="proxima-missa faixa-flex mb-3">
         <div class="me-auto">
             <div class="rotulo">Próxima missa</div>
             <p class="valor">{{ $proximaMissa['quando'] }}, às {{ $proximaMissa['horario'] }}</p>
@@ -79,7 +81,7 @@
 
 {{-- Avisos em destaque --}}
 @if($avisosDestaque->isNotEmpty())
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="section-head mb-3">
         <h5 class="mb-0" style="color:#1a3a5c;"><i class="bi bi-megaphone"></i> Avisos em destaque</h5>
         <a href="{{ route('avisos.index') }}" class="small text-decoration-none">Ver todos os avisos →</a>
     </div>
@@ -99,7 +101,7 @@
 @endif
 
 {{-- Próximos eventos --}}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="section-head mb-3">
     <h5 class="mb-0" style="color:#1a3a5c;"><i class="bi bi-calendar-event"></i> Próximos eventos</h5>
     <a href="{{ route('eventos.index') }}" class="small text-decoration-none">Ver todos os eventos →</a>
 </div>
@@ -138,7 +140,7 @@
 
 {{-- Grupos e pastorais --}}
 @if($gruposDestaque->isNotEmpty())
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="section-head mb-3">
         <h5 class="mb-0" style="color:#1a3a5c;"><i class="bi bi-people"></i> Nossos grupos e pastorais</h5>
         <a href="{{ route('grupos.index') }}" class="small text-decoration-none">Ver todos os grupos →</a>
     </div>
@@ -167,7 +169,7 @@
 
 {{-- Casamentos e batizados --}}
 <div class="panel-card mb-4" style="border-left:5px solid #f0d080;">
-    <div class="panel-body d-flex flex-wrap align-items-center gap-3">
+    <div class="panel-body faixa-flex">
         <span class="topbar-icon"><i class="bi bi-heart"></i></span>
         <div class="me-auto">
             <h6 class="mb-1" style="color:#1a3a5c;">Casamentos e batizados</h6>

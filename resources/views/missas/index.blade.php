@@ -13,7 +13,7 @@
 
 {{-- Faixa "Próxima missa" --}}
 @if($proximaMissa)
-    <div class="proxima-missa d-flex flex-wrap align-items-center gap-3 mb-4">
+    <div class="proxima-missa faixa-flex mb-4">
         <div class="me-auto">
             <div class="rotulo">Próxima missa</div>
             <p class="valor">{{ $proximaMissa['quando'] }}, às {{ $proximaMissa['horario'] }}</p>

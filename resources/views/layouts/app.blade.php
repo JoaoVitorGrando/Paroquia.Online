@@ -84,9 +84,10 @@
         .footer {
             background-color: #1a3a5c;
             color: #cfd9e6;
-            padding: 34px 0 0;
-            margin-top: 40px;
+            padding: 22px 0 0;
+            margin-top: 32px;
             flex-shrink: 0;
+            font-size: .88rem;
         }
         .footer a {
             color: #cfd9e6;
@@ -98,11 +99,24 @@
         .footer h6 {
             color: #f0d080;
             font-weight: 700;
+            font-size: .95rem;
             letter-spacing: .3px;
+            margin-bottom: .6rem !important;
         }
+        /* Lista de navegacao do rodape em duas colunas nas telas grandes */
+        .footer-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: .3rem .9rem;
+        }
+        @media (min-width: 768px) {
+            .footer-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        .footer-contato { display: grid; gap: .3rem; }
+        .footer-links li, .footer-contato li { line-height: 1.35; }
         .footer-logo {
-            width: 56px;
-            height: 56px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             overflow: hidden;
             border: 2px solid #f0d080;
@@ -116,14 +130,14 @@
         }
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.12);
-            margin-top: 26px;
-            padding: 14px 0;
-            font-size: .85rem;
+            margin-top: 16px;
+            padding: 10px 0;
+            font-size: .8rem;
         }
         /* Redes sociais no rodapé */
         .social-btn {
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.12);
             color: #fff;
@@ -217,7 +231,7 @@
         /* Agenda semanal da home */
         .agenda-semana {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(7, minmax(0, 1fr));
             gap: .5rem;
         }
         .agenda-dia {
@@ -241,9 +255,9 @@
         .agenda-dia.domingo { background-color: #f0d080; border-color: #e6c267; }
         .agenda-dia.domingo .agenda-nome, .agenda-dia.domingo .agenda-hora { color: #1a3a5c; }
         /* Bloco "Onde estamos" */
-        .mapa-embed { width: 100%; height: 340px; border: 0; display: block; }
-        @media (max-width: 767.98px) {
-            .mapa-embed { height: 260px; }
+        .mapa-embed { width: 100%; height: 100%; min-height: 300px; border: 0; display: block; }
+        @media (max-width: 991.98px) {
+            .mapa-embed { height: 280px; min-height: 0; }
         }
         /* Passo a passo numerado da página de sacramentos */
         .passo-num {
@@ -353,40 +367,128 @@
             font-weight: 700;
             margin-bottom: 4px;
         }
-        /* ===== Ajustes de responsividade para celular ===== */
-        @media (max-width: 575.98px) {
-            /* Agenda semanal: 7 colunas fixas ficam espremidas; passa a 4 por linha */
-            .agenda-semana {
-                grid-template-columns: repeat(4, 1fr);
-                gap: .4rem;
+        /* ===== Cabecalho de secao: titulo + link "ver todos" ===== */
+        .section-head {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: .15rem 1rem;
+            padding-bottom: .5rem;
+            border-bottom: 1px solid #e3e8ef;
+        }
+        .section-head h5 {
+            min-width: 0;
+            font-size: 1.12rem;
+        }
+        .section-head > a {
+            color: #1a3a5c;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .section-head > a:hover { color: #0f2a45; }
+
+        /* ===== Faixa flexivel: texto a esquerda, acao a direita ===== */
+        .faixa-flex {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .75rem 1rem;
+        }
+
+        /* ===== Botoes do hero ===== */
+        .hero-acoes {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: .6rem;
+        }
+
+        /* ===== Navbar: 9 itens + botao so cabem a partir de 1200px ===== */
+        @media (min-width: 1200px) {
+            .navbar-nav .nav-link {
+                padding-left: .45rem;
+                padding-right: .45rem;
+                font-size: .88rem;
+                white-space: nowrap;
             }
-            .agenda-dia { padding: 8px 2px; }
-            .agenda-dia .agenda-nome { font-size: .68rem; }
-            .agenda-dia .agenda-hora { font-size: .85rem; }
-
-            /* Hero: título e botões proporcionais à tela pequena */
-            .hero-igreja h1 { font-size: 1.7rem; }
-            .hero-igreja p.lead { font-size: 1rem; }
-            .hero-igreja .btn-hero,
-            .hero-igreja .btn-outline-light {
-                display: block;
-                width: 100%;
-                margin: .5rem 0 0 !important;
+        }
+        /* Faixa 1200-1399px: e o ponto mais apertado do menu, comprime mais */
+        @media (min-width: 1200px) and (max-width: 1399.98px) {
+            .navbar-nav .nav-link {
+                padding-left: .3rem;
+                padding-right: .3rem;
+                font-size: .8rem;
             }
+            .navbar-brand { margin-right: .5rem !important; gap: .45rem; }
+            .navbar-brand-text { font-size: .8rem; }
+            .navbar-brand-logo-wrap { width: 42px; height: 42px; }
+            .navbar .btn-whats { font-size: .78rem; padding: .25rem .5rem; }
+        }
+        @media (min-width: 1400px) {
+            .navbar-nav .nav-link {
+                padding-left: .6rem;
+                padding-right: .6rem;
+                font-size: .95rem;
+            }
+        }
+        /* Menu recolhido (ate 1199px): itens com area de toque e rolagem */
+        @media (max-width: 1199.98px) {
+            .navbar-collapse {
+                max-height: 78vh;
+                overflow-y: auto;
+                padding-bottom: .5rem;
+            }
+            .navbar-nav .nav-link {
+                padding-top: .55rem;
+                padding-bottom: .55rem;
+            }
+        }
 
-            /* Faixa "Próxima missa": valor não estoura a largura */
-            .proxima-missa .valor { font-size: 1.3rem; }
-
-            /* Barra de título das páginas: tipografia mais compacta */
+        /* ===== Ajustes de responsividade para tablet ===== */
+        @media (max-width: 767.98px) {
+            .section-head h5 { font-size: 1.02rem; }
             .admin-topbar { padding: 14px 16px; }
             .admin-topbar h1, .admin-topbar h2 { font-size: 1.1rem; }
         }
+
+        /* ===== Ajustes de responsividade para celular ===== */
+        @media (max-width: 575.98px) {
+            /* Agenda semanal: mantem os 7 dias na mesma linha, so que compactos */
+            .agenda-semana { gap: .25rem; }
+            .agenda-dia {
+                padding: 7px 1px;
+                border-radius: 8px;
+            }
+            .agenda-dia .agenda-nome { font-size: .58rem; letter-spacing: 0; }
+            .agenda-dia .agenda-hora { font-size: .68rem; }
+
+            /* Hero: titulo e botoes proporcionais a tela pequena */
+            .hero-igreja { height: clamp(300px, 70vw, 380px); min-height: 300px; margin-bottom: 22px; }
+            .hero-igreja h1 { font-size: 1.6rem; }
+            .hero-igreja p.lead { font-size: .98rem; }
+            .hero-acoes { flex-direction: column; align-items: stretch; }
+            .hero-acoes .btn { width: 100%; }
+
+            /* Faixa "Proxima missa": valor nao estoura a largura */
+            .proxima-missa { padding: 14px 16px; }
+            .proxima-missa .valor { font-size: 1.22rem; }
+            .faixa-flex > .btn { width: 100%; }
+
+            /* Rodape: espacamentos menores no celular */
+            .footer { padding-top: 18px; margin-top: 24px; font-size: .85rem; }
+            .footer-bottom { text-align: center; justify-content: center !important; }
+            .footer-contato .ms-3 { margin-left: 0 !important; }
+        }
+
+        /* Nenhum bloco deve empurrar a pagina para os lados */
+        img, iframe, table { max-width: 100%; }
     </style>
 </head>
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <nav class="navbar navbar-expand-xl navbar-dark">
         <div class="container-fluid px-3 px-lg-4">
             <a class="navbar-brand me-3" href="{{ route('home') }}" title="Paróquia Nossa Senhora da Glória">
                 <span class="navbar-brand-logo-wrap">
@@ -446,7 +548,7 @@
                     </li>
 
                     {{-- Contato por WhatsApp com a secretaria (aparece em todas as páginas) --}}
-                    <li class="nav-item d-flex align-items-center ms-lg-2 me-lg-1 my-2 my-lg-0">
+                    <li class="nav-item d-flex align-items-center ms-xl-2 me-xl-1 my-2 my-xl-0">
                         <x-whatsapp-btn
                             mensagem="Olá, vim pelo site da paróquia e gostaria de falar com a secretaria."
                             rotulo="Secretaria" />
@@ -509,11 +611,11 @@
     <!-- Footer institucional -->
     <footer class="footer">
         <div class="container">
-            <div class="row g-4">
+            <div class="row g-3 g-lg-4">
 
                 {{-- Marca --}}
                 <div class="col-lg-5">
-                    <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="d-flex align-items-center gap-3 mb-2">
                         <span class="footer-logo">
                             <img src="{{ asset('images/logoigreja.png') }}" alt="Logo da Paróquia Nossa Senhora da Glória">
                         </span>
@@ -522,7 +624,7 @@
                             <small>Igreja Católica Ucraniana · Rito Bizantino</small>
                         </div>
                     </div>
-                    <p class="small mb-3">
+                    <p class="small mb-2">
                         Fundada em 1952 por imigrantes ucranianos, a paróquia mantém viva a tradição
                         religiosa e cultural da comunidade de Pitanga e região.
                     </p>
@@ -541,7 +643,7 @@
                 {{-- Navegação --}}
                 <div class="col-6 col-lg-3">
                     <h6 class="mb-3">Navegação</h6>
-                    <ul class="list-unstyled small mb-0 d-grid gap-2">
+                    <ul class="list-unstyled small mb-0 footer-links">
                         <li><a href="{{ route('home') }}">Início</a></li>
                         <li><a href="{{ route('missas.index') }}">Horários de Missas</a></li>
                         <li><a href="{{ route('eventos.index') }}">Eventos</a></li>
@@ -556,7 +658,7 @@
                 {{-- Contato --}}
                 <div class="col-6 col-lg-4">
                     <h6 class="mb-3">Contato</h6>
-                    <ul class="list-unstyled small mb-0 d-grid gap-2">
+                    <ul class="list-unstyled small mb-0 footer-contato">
                         <li>
                             <i class="bi bi-geo-alt"></i> Rua Conselheiro Zacarias, 295<br>
                             <span class="ms-3">85200-053, Pitanga, Paraná</span>
