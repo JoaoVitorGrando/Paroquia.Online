@@ -66,10 +66,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/eventos/{id}/editar', [AdminController::class, 'editarEvento'])->name('eventos.editar');
     Route::put('/eventos/{id}', [AdminController::class, 'atualizarEvento'])->name('eventos.atualizar');
     Route::delete('/eventos/{id}', [AdminController::class, 'excluirEvento'])->name('eventos.excluir');
+    Route::get('/eventos/{id}/voluntarios', [AdminController::class, 'voluntariosEvento'])->name('eventos.voluntarios');
 
     Route::get('/avisos', [AdminController::class, 'avisos'])->name('avisos');
     Route::get('/avisos/criar', [AdminController::class, 'criarAviso'])->name('avisos.criar');
     Route::post('/avisos', [AdminController::class, 'salvarAviso'])->name('avisos.salvar');
+    Route::get('/avisos/{id}/editar', [AdminController::class, 'editarAviso'])->name('avisos.editar');
+    Route::put('/avisos/{id}', [AdminController::class, 'atualizarAviso'])->name('avisos.atualizar');
     Route::delete('/avisos/{id}', [AdminController::class, 'excluirAviso'])->name('avisos.excluir');
 
     // US013 - Gerenciamento de Grupos (Sprint 3)

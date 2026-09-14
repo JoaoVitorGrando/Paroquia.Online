@@ -12,34 +12,40 @@ Site institucional da Paróquia Nossa Senhora da Glória.
 ## Tecnologias
 
 - PHP 8.x / Laravel 10
-- MySQL
+- SQLite (padrão) ou MySQL
 - Bootstrap 5
 - Blade (template engine do Laravel)
 
 ## Como rodar o projeto
 
-### Requisitos
+### Jeito rápido (Windows)
 
-- PHP >= 8.1
-- Composer
-- MySQL
-- Node.js (opcional, para compilar assets)
+Clique duas vezes em **INICIAR.bat**. Ele cuida de tudo sozinho: encontra o PHP
+(ou baixa uma cópia portátil), instala as dependências com o Composer, cria o
+`.env` e a `APP_KEY`, monta o banco com migrations e seeders e sobe o servidor
+em http://localhost:8000.
 
-### Instalação
+### Manual
+
+Requisitos: PHP >= 8.1 com a extensão `pdo_sqlite` e Composer.
 
 ```bash
-git clone https://github.com/SEU_USUARIO/paroquia-online.git
-cd paroquia-online
+git clone https://github.com/JoaoVitorGrando/Paroquia.Online.git
+cd Paroquia.Online
 
 composer install
-
 cp .env.example .env
 php artisan key:generate
+php artisan migrate --seed
+php artisan serve
 ```
 
-### Configurar banco de dados
+Acesse em: http://localhost:8000
 
-Edite o `.env` com suas credenciais MySQL:
+### Banco de dados
+
+O `.env.example` já vem com `DB_CONNECTION=sqlite`, que não exige instalar nada.
+Para usar MySQL, edite o `.env`:
 
 ```
 DB_CONNECTION=mysql
@@ -50,19 +56,7 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Depois rode as migrations e seeders:
-
-```bash
-php artisan migrate --seed
-```
-
-### Iniciar servidor
-
-```bash
-php artisan serve
-```
-
-Acesse em: http://localhost:8000
+e rode `php artisan migrate --seed`.
 
 ## Acesso administrador
 
