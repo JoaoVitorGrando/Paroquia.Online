@@ -3,7 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Paróquia Nossa Senhora da Glória')</title>
+    <title>@yield('title', 'Início') · {{ config('paroquia.nome_curto') }}</title>
+
+    @php
+        $descricaoPadrao = 'Horários de missa, eventos, grupos, catequese e avisos da '
+            .config('paroquia.nome').', em '.config('paroquia.endereco.cidade')
+            .' ('.config('paroquia.endereco.uf').').';
+    @endphp
+    <meta name="description" content="@yield('descricao', $descricaoPadrao)">
+
+    <!-- Icone da aba do navegador -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('images/logoigreja.png') }}">
+
+    <!-- Previa do link quando alguem compartilha o site no WhatsApp ou no Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:site_name" content="{{ config('paroquia.nome') }}">
+    <meta property="og:title" content="@yield('title', 'Início') · {{ config('paroquia.nome') }}">
+    <meta property="og:description" content="@yield('descricao', $descricaoPadrao)">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('images/compartilhar.jpg') }}">
+    <meta name="twitter:card" content="summary_large_image">
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -91,8 +112,6 @@
         }
         .card-data small { display: block; font-weight: 600; font-size: .68rem; text-transform: uppercase; }
         .card-aviso { border-left: 5px solid var(--dourado); }
-        .eventos-passados .card { opacity: .82; }
-        .eventos-passados .card:hover { opacity: 1; }
 
         /* ===== Estado vazio ===== */
         .estado-vazio {
@@ -253,8 +272,8 @@
         .modal-paroquia .links-rapidos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         /* Redes sociais no rodapé */
         .social-btn {
-            width: 34px;
-            height: 34px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.12);
             color: #fff;
@@ -607,6 +626,13 @@
             .proxima-missa .valor { font-size: 1.22rem; }
             .faixa-flex > .btn { width: 100%; }
 
+            /* Botoes empilhados ganham folga: dedo grande erra menos */
+            .hero-acoes { gap: .75rem; }
+            .d-grid.gap-2 { gap: .75rem !important; }
+            .card-body .mt-auto .btn + .btn { margin-top: .25rem; }
+            .footer-linha .d-flex.gap-2 { gap: .75rem !important; }
+            .faixa-flex { gap: .9rem 1rem; }
+
             /* Rodape no celular: tudo empilhado e centralizado */
             .footer { padding: 16px 0; margin-top: 28px; font-size: .85rem; }
             .footer-linha { justify-content: center; text-align: center; }
@@ -632,14 +658,59 @@
             .hero-slide { transition: none !important; }
         }
 
+        /* Link "pular para o conteudo": some ate receber foco pelo teclado */
+        .pular-conteudo {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            z-index: 2000;
+            background: var(--dourado);
+            color: var(--azul);
+            font-weight: 700;
+            padding: .7rem 1.2rem;
+            border-radius: 0 0 10px 0;
+        }
+        .pular-conteudo:focus {
+            left: 0;
+        }
+        main:focus { outline: none; }
+
+        /* Contraste: o cinza padrao do Bootstrap nao alcanca 4.5:1 em texto pequeno */
+        .btn-outline-secondary {
+            color: #495661;
+            border-color: #8b96a3;
+        }
+        .btn-outline-secondary:hover, .btn-outline-secondary:focus {
+            background-color: #495661;
+            border-color: #495661;
+            color: #fff;
+        }
+
+        /* O azul padrao do Bootstrap destoa da paleta do site */
+        .btn-primary {
+            background-color: var(--azul);
+            border-color: var(--azul);
+        }
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: #142d47;
+            border-color: #142d47;
+        }
+
+        /* Eventos ja realizados: marcados por etiqueta, nao por opacidade
+           (opacidade derruba o contraste do texto) */
+        .eventos-passados .card { border-color: #d7dde7; }
+        .eventos-passados .card-foto { filter: grayscale(.35); }
+
         /* Nenhum bloco deve empurrar a pagina para os lados */
         img, iframe, table { max-width: 100%; }
     </style>
 </head>
 <body>
 
+    <a href="#conteudo" class="pular-conteudo">Pular para o conteúdo</a>
+
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-xl navbar-dark">
+    <nav class="navbar navbar-expand-xl navbar-dark" aria-label="Menu principal">
         <div class="container-fluid px-3 px-lg-4">
             <a class="navbar-brand me-3" href="{{ route('home') }}" title="Paróquia Nossa Senhora da Glória">
                 <span class="navbar-brand-logo-wrap">
@@ -647,7 +718,8 @@
                 </span>
                 <span class="navbar-brand-text">Paróquia N. S. da Glória</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-label="Abrir o menu de navegação">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -737,7 +809,7 @@
     </nav>
 
     <!-- Conteúdo principal -->
-    <main>
+    <main id="conteudo" tabindex="-1">
         @yield('hero')
 
         <div class="container mt-4">
@@ -760,7 +832,7 @@
     </main>
 
     <!-- Footer institucional -->
-    <footer class="footer">
+    <footer class="footer" aria-label="Rodapé com contatos da paróquia">
         <div class="container">
             <div class="footer-linha">
                 <div class="footer-marca me-auto">

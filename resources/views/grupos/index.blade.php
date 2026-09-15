@@ -12,6 +12,7 @@
 </div>
 
 @if($grupos->isNotEmpty())
+    <h2 class="visually-hidden">Grupos ativos</h2>
     <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
         @foreach($grupos as $grupo)
             <div class="col"><x-card-grupo :grupo="$grupo" :resumo="160" /></div>

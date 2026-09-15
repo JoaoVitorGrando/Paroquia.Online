@@ -1,0 +1,4 @@
+# O site inteiro pode ser indexado pelos buscadores, menos o painel da secretaria.
+User-agent: *
+Disallow: /admin
+Disallow: /login

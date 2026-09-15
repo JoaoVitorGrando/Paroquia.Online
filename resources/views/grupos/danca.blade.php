@@ -7,7 +7,7 @@
 <div class="admin-topbar d-flex flex-wrap align-items-center gap-3">
     <span class="topbar-icon"><i class="bi bi-music-note-beamed"></i></span>
     <div class="me-auto">
-        <h2>Grupo Folclórico Ucraniano Kyiv</h2>
+        <h1>Grupo Folclórico Ucraniano Kyiv</h1>
         <p class="topbar-sub">Preservando a cultura ucraniana em Pitanga desde 1972</p>
     </div>
     <a href="{{ route('grupos.index') }}" class="btn btn-sm btn-outline-light">
@@ -29,10 +29,12 @@
     </div>
     @if($fotos->count() > 1)
         <button class="carousel-control-prev" type="button" data-bs-target="#carrosselDanca" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon"></span>
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Foto anterior</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#carrosselDanca" data-bs-slide="next">
-            <span class="carousel-control-next-icon"></span>
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próxima foto</span>
         </button>
     @endif
 </div>
@@ -115,13 +117,13 @@
                 @endif
 
                 <a href="{{ config('paroquia.formularios.matricula_danca') }}" target="_blank" rel="noopener"
-                   class="btn w-100 mb-2 text-white" style="background-color:#1a3a5c;">
+                   class="btn w-100 mb-3 text-white" style="background-color:#1a3a5c;">
                     <i class="bi bi-pencil-square"></i> Matrículas e rematrículas 2026
                 </a>
                 <x-whatsapp-btn
                     mensagem="Olá, vim pelo site da paróquia e gostaria de participar do Grupo Folclórico Ucraniano Kyiv."
                     rotulo="Falar pelo WhatsApp"
-                    classe="btn btn-whats w-100 mb-2" />
+                    classe="btn btn-whats w-100 mb-3" />
                 <a href="{{ config('paroquia.redes.instagram_danca') }}" target="_blank" rel="noopener"
                    class="btn btn-outline-primary w-100">
                     <i class="bi bi-instagram"></i> @folclorekyivpitanga

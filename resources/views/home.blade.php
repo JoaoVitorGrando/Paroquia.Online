@@ -143,7 +143,7 @@
     <div class="panel-body faixa-flex">
         <span class="topbar-icon"><i class="bi bi-heart"></i></span>
         <div class="me-auto">
-            <h6 class="mb-1" style="color:#1a3a5c;">Casamentos e batizados</h6>
+            <h2 class="card-titulo mb-1">Casamentos e batizados</h2>
             <p class="mb-0 small text-muted">
                 O agendamento é feito <strong>pessoalmente na secretaria</strong>, com antecedência.
                 Veja os documentos necessários e marque sua conversa.

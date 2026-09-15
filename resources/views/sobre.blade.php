@@ -5,7 +5,7 @@
 @section('content')
 <div class="row justify-content-center">
     <div class="col-lg-10">
-        <h2 class="mb-1"><i class="bi bi-info-circle"></i> Sobre a Paróquia</h2>
+        <h1 class="mb-1"><i class="bi bi-info-circle" aria-hidden="true"></i> Sobre a Paróquia</h1>
         <p class="text-muted mb-4">Paróquia Nossa Senhora da Glória, Pitanga, PR</p>
 
         {{-- Carrossel de imagens da paróquia (Sprint 3) --}}
@@ -25,7 +25,7 @@
                     <img src="{{ asset('images/sobre1.jpeg') }}" class="d-block w-100 carousel-img"
                          alt="Paróquia Nossa Senhora da Glória">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Nossa Igreja</h5>
+                        <p class="fs-5 fw-bold mb-1">Nossa Igreja</p>
                         <p>Casa de fé e acolhimento desde 1952.</p>
                     </div>
                 </div>
@@ -33,7 +33,7 @@
                     <img src="{{ asset('images/sobre2.jpeg') }}" class="d-block w-100 carousel-img"
                          alt="Celebração na paróquia">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Celebrações</h5>
+                        <p class="fs-5 fw-bold mb-1">Celebrações</p>
                         <p>Rito bizantino ucraniano celebrado todos os domingos.</p>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                     <img src="{{ asset('images/sobre3.jpeg') }}" class="d-block w-100 carousel-img"
                          alt="Comunidade reunida">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Comunidade</h5>
+                        <p class="fs-5 fw-bold mb-1">Comunidade</p>
                         <p>Fiéis e famílias unidos em oração e tradição.</p>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <img src="{{ asset('images/sobre4.jpeg') }}" class="d-block w-100 carousel-img"
                          alt="Atividades culturais">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Cultura Ucraniana</h5>
+                        <p class="fs-5 fw-bold mb-1">Cultura Ucraniana</p>
                         <p>Dança, música e tradições preservadas vivas.</p>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <img src="{{ asset('images/sobre6.jpeg') }}" class="d-block w-100 carousel-img"
                          alt="Eventos da paróquia">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Eventos e Festas</h5>
+                        <p class="fs-5 fw-bold mb-1">Eventos e Festas</p>
                         <p>Momentos que fortalecem nossa comunidade.</p>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     <img src="{{ asset('images/sobre7.jpg') }}" class="d-block w-100 carousel-img"
                          alt="Tradição e fé">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Tradição e Fé</h5>
+                        <p class="fs-5 fw-bold mb-1">Tradição e Fé</p>
                         <p>A herança dos imigrantes ucranianos mantida viva.</p>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                     <img src="{{ asset('images/sobre8.jpg') }}" class="d-block w-100 carousel-img"
                          alt="Vida paroquial">
                     <div class="carousel-caption d-none d-md-block">
-                        <h5>Vida Paroquial</h5>
+                        <p class="fs-5 fw-bold mb-1">Vida Paroquial</p>
                         <p>Catequese, devoções e ação social todos os dias.</p>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
         {{-- Identificação e endereço --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-geo-alt"></i> Paróquia Nossa Senhora da Glória, Pitanga/PR</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-geo-alt"></i> Paróquia Nossa Senhora da Glória, Pitanga/PR</h2>
             </div>
             <div class="card-body">
                 <p class="mb-1"><strong>Endereço:</strong> {{ config('paroquia.endereco.logradouro') }}, {{ config('paroquia.endereco.numero') }}, {{ config('paroquia.endereco.bairro') }}, {{ config('paroquia.endereco.cep') }}, {{ config('paroquia.endereco.cidade') }}, {{ config('paroquia.endereco.estado') }}</p>
@@ -106,7 +106,7 @@
         {{-- Padroeira --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-star"></i> Nossa Padroeira</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-star"></i> Nossa Padroeira</h2>
             </div>
             <div class="card-body">
                 <p class="mb-0">A festa de <strong>Nossa Senhora da Glória</strong> é celebrada no dia
@@ -118,7 +118,7 @@
         {{-- História --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-clock-history"></i> A comunidade ucraniana em Pitanga</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-clock-history"></i> A comunidade ucraniana em Pitanga</h2>
             </div>
             <div class="card-body">
                 <p>Pitanga fica no centro do Paraná e, no início, chamava-se <strong>Serra da Pitanga</strong>.
@@ -162,7 +162,7 @@
         {{-- Linha do tempo --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-signpost-split"></i> Linha do tempo</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-signpost-split"></i> Linha do tempo</h2>
             </div>
             <div class="card-body">
                 <ul class="mb-3">
@@ -185,7 +185,7 @@
         {{-- Missão --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-heart"></i> Nossa Missão</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-heart"></i> Nossa Missão</h2>
             </div>
             <div class="card-body">
                 <p class="mb-0">Evangelizar e acolher todos os fiéis, promovendo a fé católica de rito bizantino ucraniano,
@@ -196,7 +196,7 @@
         {{-- Sacerdotes --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-person-badge"></i> Sacerdotes da Paróquia</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-person-badge"></i> Sacerdotes da Paróquia</h2>
             </div>
             <div class="card-body">
                 <p class="mb-2"><strong>Pároco:</strong> Pe. Mateus Krefer, OSBM</p>
@@ -213,7 +213,7 @@
         {{-- Comunidades religiosas --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-building"></i> Comunidades de Vida Consagrada</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-building"></i> Comunidades de Vida Consagrada</h2>
             </div>
             <div class="card-body">
                 <ul class="mb-0">
@@ -227,14 +227,14 @@
         {{-- Atividades pastorais --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-bookmark-heart"></i> Atividades Pastorais</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-bookmark-heart"></i> Atividades Pastorais</h2>
             </div>
             <div class="card-body">
-                <h6 class="fw-bold" style="color:#1a3a5c;">Catequese</h6>
+                <h3 class="card-titulo">Catequese</h3>
                 <p>Realiza-se <strong>somente aos sábados, das 8h30 às 11h30</strong>, ministrada pelas
                    Irmãs Servas de Maria Imaculada, Catequistas do Sagrado Coração e por catequistas leigas.</p>
 
-                <h6 class="fw-bold mt-3" style="color:#1a3a5c;">Cultos e Devoções Tradicionais</h6>
+                <h3 class="card-titulo mt-3">Cultos e Devoções Tradicionais</h3>
                 <ul>
                     <li><strong>Quaresma:</strong> Via-Sacra, Missa dos Dons Pré-Santificados, celebrações da Semana Santa e tríduos de renovação espiritual</li>
                     <li><strong>Maio:</strong> tradicional novena (<em>Maivka</em>)</li>
@@ -243,7 +243,7 @@
                     <li>Periodicamente, missões realizadas pelos Padres Basilianos</li>
                 </ul>
 
-                <h6 class="fw-bold mt-3" style="color:#1a3a5c;">Ação Social</h6>
+                <h3 class="card-titulo mt-3">Ação Social</h3>
                 <p class="mb-0">Periodicamente realizam-se festas e promoções com a finalidade de manter a Paróquia e suas obras.</p>
             </div>
         </div>
@@ -251,7 +251,7 @@
         {{-- Associações --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-people"></i> Associações Religioso-Culturais</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-people"></i> Associações Religioso-Culturais</h2>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -279,7 +279,7 @@
         {{-- Comunidades --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-map"></i> Comunidades Atendidas</strong>
+                <h2 class="h6 mb-0"><i class="bi bi-map"></i> Comunidades Atendidas</h2>
             </div>
             <div class="card-body">
                 <p class="text-muted">A Paróquia atende mais de 20 comunidades em diversas localidades.

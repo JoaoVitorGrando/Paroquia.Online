@@ -3,7 +3,12 @@
 /public/build
 /public/hot
 /public/storage
-/public/uploads
+# As fotos enviadas pelo painel nao entram no repositorio, mas as pastas
+# precisam existir no servidor, por isso os arquivos .gitkeep ficam de fora.
+/public/uploads/**
+!/public/uploads/eventos/
+!/public/uploads/grupos/
+!/public/uploads/*/.gitkeep
 /storage/*.key
 /vendor
 .env

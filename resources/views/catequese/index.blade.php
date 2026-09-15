@@ -6,7 +6,7 @@
 <div class="admin-topbar d-flex flex-wrap align-items-center gap-3">
     <span class="topbar-icon"><i class="bi bi-book"></i></span>
     <div class="me-auto">
-        <h2>Catequese</h2>
+        <h1>Catequese</h1>
         <p class="topbar-sub">Formação na fé para crianças, jovens e adultos</p>
     </div>
 </div>
@@ -42,7 +42,7 @@
 </div>
 
 {{-- Turmas oferecidas --}}
-<h5 class="mb-3" style="color:#1a3a5c;"><i class="bi bi-mortarboard"></i> Turmas oferecidas</h5>
+<h2 class="secao-titulo mb-3"><i class="bi bi-mortarboard" aria-hidden="true"></i> Turmas oferecidas</h2>
 
 @php
     $turmas = [
@@ -62,7 +62,7 @@
         <div class="col">
             <div class="panel-card h-100">
                 <div class="panel-body d-flex flex-column h-100">
-                    <h6 class="mb-2" style="color:#1a3a5c;">{{ $turma['nome'] }}</h6>
+                    <h3 class="card-titulo">{{ $turma['nome'] }}</h3>
                     <span class="badge mb-2 align-self-start" style="background-color:#eaf0fb; color:#1a3a5c;">
                         {{ $turma['idade'] }}
                     </span>

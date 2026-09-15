@@ -16,7 +16,7 @@
     <div class="panel-body d-flex flex-wrap align-items-center gap-3">
         <i class="bi bi-whatsapp" style="font-size:2.6rem; color:#25d366;"></i>
         <div class="me-auto">
-            <h5 class="mb-1" style="color:#0a3d1f;">Fale com a secretaria pelo WhatsApp</h5>
+            <h2 class="h6 mb-1" style="color:#0a3d1f;">Fale com a secretaria pelo WhatsApp</h2>
             <p class="mb-0 small text-muted">
                 É o jeito mais rápido de tirar dúvidas sobre missas, catequese, batizados e casamentos.
                 Você também pode ligar, escrever para o nosso e-mail ou passar na secretaria.

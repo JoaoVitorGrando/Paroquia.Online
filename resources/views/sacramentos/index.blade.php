@@ -6,7 +6,7 @@
 <div class="admin-topbar d-flex flex-wrap align-items-center gap-3">
     <span class="topbar-icon"><i class="bi bi-heart"></i></span>
     <div class="me-auto">
-        <h2>Batismo e casamento</h2>
+        <h1>Batismo e casamento</h1>
         <p class="topbar-sub">Como agendar e quais documentos são necessários</p>
     </div>
 </div>
@@ -75,12 +75,12 @@
         <div class="col-lg-6">
             <div class="panel-card h-100">
                 <div class="panel-head" style="background-color:#1a3a5c; color:#fff;">
-                    <i class="bi {{ $s['icone'] }}"></i> {{ $s['titulo'] }}
+                    <h2 class="h6 mb-0 text-white"><i class="bi {{ $s['icone'] }}" aria-hidden="true"></i> {{ $s['titulo'] }}</h2>
                 </div>
                 <div class="panel-body d-flex flex-column h-100">
                     <p class="text-muted">{{ $s['texto'] }}</p>
 
-                    <h6 style="color:#1a3a5c;">Passo a passo</h6>
+                    <h3 class="card-titulo">Passo a passo</h3>
                     <ol class="list-unstyled mb-3">
                         @foreach($s['passos'] as $i => $passo)
                             <li class="d-flex align-items-start gap-3 mb-2">
@@ -90,7 +90,7 @@
                         @endforeach
                     </ol>
 
-                    <h6 style="color:#1a3a5c;">Documentos</h6>
+                    <h3 class="card-titulo">Documentos</h3>
                     <ul class="mb-3">
                         @foreach($s['documentos'] as $doc)
                             <li>{{ $doc }}</li>
@@ -98,7 +98,7 @@
                     </ul>
 
                     @if(!empty($s['regras']))
-                        <h6 style="color:#1a3a5c;">Condições dos padrinhos e da celebração</h6>
+                        <h3 class="card-titulo">Condições dos padrinhos e da celebração</h3>
                         <ul class="mb-4">
                             @foreach($s['regras'] as $regra)
                                 <li>{{ $regra }}</li>

@@ -48,6 +48,7 @@
         $diaAnterior = null;
     @endphp
 
+    <h2 class="visually-hidden">Tabela de horários</h2>
     <div class="panel-card">
         <div class="table-responsive">
             <table class="table align-middle mb-0">

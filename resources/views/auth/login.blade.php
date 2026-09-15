@@ -7,7 +7,7 @@
     <div class="col-md-5">
         <div class="card shadow-sm mt-3">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <h5 class="mb-0"><i class="bi bi-shield-lock"></i> Acesso administrativo</h5>
+                <h1 class="h6 mb-0"><i class="bi bi-shield-lock" aria-hidden="true"></i> Acesso administrativo</h1>
             </div>
             <div class="card-body">
 
