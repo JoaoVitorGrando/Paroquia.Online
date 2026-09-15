@@ -7,7 +7,7 @@
     <div class="col-md-5">
         <div class="card shadow-sm mt-3">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <h5 class="mb-0"><i class="bi bi-person"></i> Entrar na conta</h5>
+                <h5 class="mb-0"><i class="bi bi-shield-lock"></i> Acesso administrativo</h5>
             </div>
             <div class="card-body">
 
@@ -63,8 +63,9 @@
                 </form>
 
                 <hr>
-                <p class="text-center mb-0">
-                    Não tem conta? <a href="{{ route('cadastro.form') }}">Cadastre-se</a>
+                <p class="text-center small text-muted mb-0">
+                    Área restrita à equipe da paróquia. Para falar conosco, use a
+                    <a href="{{ route('contato') }}">página de contato</a>.
                 </p>
 
             </div>

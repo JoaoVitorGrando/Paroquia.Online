@@ -18,7 +18,7 @@ class EventoControllerTest extends TestCase
 
     private function criarAdmin(): User
     {
-        return User::create([
+        return User::forceCreate([
             'name'     => 'Admin',
             'email'    => 'admin@teste.com',
             'password' => Hash::make('senha123'),

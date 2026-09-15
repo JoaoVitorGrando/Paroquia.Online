@@ -19,10 +19,4 @@ class Grupo extends Model
         'imagem',
         'ativo',
     ];
-
-    public function inscritos()
-    {
-        return $this->belongsToMany(User::class, 'inscricoes_grupo')
-                    ->withTimestamps();
-    }
 }

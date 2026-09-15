@@ -9,11 +9,17 @@ class User extends Authenticatable
 {
     use HasFactory;
 
+    /**
+     * Campos preenchiveis em massa.
+     *
+     * 'is_admin' fica de fora de proposito: a flag de administrador nunca deve
+     * poder ser definida a partir de dados de requisicao. Quem precisa marca-la
+     * (o AdminSeeder) faz isso explicitamente com forceFill().
+     */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'is_admin',
     ];
 
     protected $hidden = [
@@ -23,17 +29,4 @@ class User extends Authenticatable
     protected $casts = [
         'is_admin' => 'boolean',
     ];
-
-    public function grupos()
-    {
-        return $this->belongsToMany(Grupo::class, 'inscricoes_grupo')
-                    ->withTimestamps();
-    }
-
-    public function eventosVoluntario()
-    {
-        return $this->belongsToMany(Evento::class, 'voluntarios')
-                    ->withPivot('mensagem')
-                    ->withTimestamps();
-    }
 }

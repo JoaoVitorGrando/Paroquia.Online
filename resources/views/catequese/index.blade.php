@@ -17,7 +17,7 @@
         <i class="bi bi-book-half" style="font-size:1.8rem; color:#1a3a5c; flex-shrink:0;"></i>
         <div class="me-auto">
             <p class="mb-0">
-                A catequese da paróquia realiza-se <strong>aos sábados e domingos</strong>, ministrada pelas
+                A catequese da paróquia realiza-se <strong>somente aos sábados, das 8h30 às 11h30</strong>, ministrada pelas
                 <strong>Irmãs Servas de Maria Imaculada</strong>, pelas <strong>Catequistas do Sagrado Coração</strong>
                 e por catequistas leigas da comunidade. As inscrições acontecem no início de cada ano, na secretaria
                 paroquial ou pelo WhatsApp.
@@ -30,18 +30,29 @@
     </div>
 </div>
 
+{{-- Horário único de todas as turmas --}}
+<div class="panel-card mb-4">
+    <div class="panel-body d-flex flex-wrap align-items-center gap-3">
+        <span class="topbar-icon"><i class="bi bi-calendar-week"></i></span>
+        <div>
+            <strong style="color:#1a3a5c;">Sábados, das 8h30 às 11h30</strong>
+            <p class="small text-muted mb-0">Todas as turmas se encontram no mesmo horário, no salão paroquial.</p>
+        </div>
+    </div>
+</div>
+
 {{-- Turmas oferecidas --}}
 <h5 class="mb-3" style="color:#1a3a5c;"><i class="bi bi-mortarboard"></i> Turmas oferecidas</h5>
 
 @php
     $turmas = [
-        ['nome' => 'Iniciação à fé',        'idade' => '7 a 9 anos',        'quando' => 'Sábado, 14:00',
+        ['nome' => 'Iniciação à fé',        'idade' => '7 a 9 anos',
          'texto' => 'Primeiro contato com a fé, as orações e a história da salvação.'],
-        ['nome' => 'Primeira Eucaristia',   'idade' => '10 a 12 anos',      'quando' => 'Sábado, 15:30',
+        ['nome' => 'Primeira Eucaristia',   'idade' => '10 a 12 anos',
          'texto' => 'Preparação para receber o sacramento da Primeira Comunhão.'],
-        ['nome' => 'Crisma',                'idade' => '13 anos ou mais',   'quando' => 'Domingo, 09:00',
+        ['nome' => 'Crisma',                'idade' => '13 anos ou mais',
          'texto' => 'Preparação para o sacramento da Confirmação (Crisma).'],
-        ['nome' => 'Catequese de adultos',  'idade' => 'a partir de 18 anos', 'quando' => 'Domingo, 10:30',
+        ['nome' => 'Catequese de adultos',  'idade' => 'a partir de 18 anos',
          'texto' => 'Para adultos que ainda não receberam os sacramentos ou desejam aprofundar a fé.'],
     ];
 @endphp
@@ -55,11 +66,10 @@
                     <span class="badge mb-2 align-self-start" style="background-color:#eaf0fb; color:#1a3a5c;">
                         {{ $turma['idade'] }}
                     </span>
-                    <p class="small text-muted">{{ $turma['texto'] }}</p>
-                    <p class="small mb-3"><i class="bi bi-clock"></i> {{ $turma['quando'] }}</p>
+                    <p class="small text-muted mb-3">{{ $turma['texto'] }}</p>
                     <div class="mt-auto">
                         <x-whatsapp-btn
-                            :mensagem="'Olá, vim pelo site da paróquia e gostaria de informações sobre a inscrição na catequese — turma *' . $turma['nome'] . '*.'"
+                            :mensagem="'Olá, vim pelo site da paróquia e gostaria de informações sobre a inscrição na catequese, turma *' . $turma['nome'] . '*.'"
                             rotulo="Quero informações" />
                     </div>
                 </div>
@@ -103,6 +113,6 @@
 
 <p class="text-muted small mt-3 mb-0">
     <i class="bi bi-info-circle"></i>
-    Idades, horários e documentos são uma proposta e devem ser confirmados com a secretaria paroquial.
+    As idades e os documentos são uma referência e devem ser confirmados com a secretaria paroquial.
 </p>
 @endsection

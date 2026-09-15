@@ -9,20 +9,17 @@ class MissaSeeder extends Seeder
 {
     public function run(): void
     {
-        $missas = [
-            ['dia_semana' => 'Segunda feira', 'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => null],
-            ['dia_semana' => 'Quarta feira', 'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => null],
-            ['dia_semana' => 'Sexta feira',  'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => null],
-            ['dia_semana' => 'Sábado',        'horario' => '18:00', 'local' => 'Igreja Matriz', 'observacao' => null],
-            ['dia_semana' => 'Domingo',       'horario' => '09:00', 'local' => 'Igreja Matriz', 'observacao' => 'Missa solene'],
-            ['dia_semana' => 'Domingo',       'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => null],
+        $celebracoes = [
+            ['dia_semana' => 'Domingo',      'horario' => '08:30', 'local' => 'Igreja Matriz', 'observacao' => null],
+            ['dia_semana' => 'Quarta feira', 'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => 'Novena'],
+            ['dia_semana' => 'Sábado',       'horario' => '19:00', 'local' => 'Igreja Matriz', 'observacao' => null],
         ];
 
         // Evita duplicar dados ao rodar o seeder mais de uma vez
-        foreach ($missas as $missa) {
+        foreach ($celebracoes as $celebracao) {
             Missa::firstOrCreate(
-                ['dia_semana' => $missa['dia_semana'], 'horario' => $missa['horario']],
-                array_merge($missa, ['ativo' => true])
+                ['dia_semana' => $celebracao['dia_semana'], 'horario' => $celebracao['horario']],
+                array_merge($celebracao, ['ativo' => true])
             );
         }
     }

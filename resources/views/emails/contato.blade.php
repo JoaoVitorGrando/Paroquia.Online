@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Contato — Paróquia Nossa Senhora da Glória</title>
+    <title>Mensagem de contato do site da Paróquia Nossa Senhora da Glória</title>
 </head>
 <body style="font-family: Arial, sans-serif; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd;">

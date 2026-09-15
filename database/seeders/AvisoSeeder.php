@@ -11,14 +11,9 @@ class AvisoSeeder extends Seeder
     {
         $avisos = [
             [
-                'titulo'   => 'Inscriçoes abertas para a Catequese 2026',
-                'conteudo' => 'As inscrições para a catequese 2026 estão abertas. Procure a secretaria paroquial para mais informações.',
+                'titulo'   => 'Inscrições abertas para a Catequese 2026',
+                'conteudo' => 'As inscrições para a catequese 2026 estão abertas. Os encontros acontecem aos sábados, das 8h30 às 11h30. Procure a secretaria paroquial ou fale conosco pelo WhatsApp.',
                 'destaque' => true,
-            ],
-            [
-                'titulo'   => 'Festa da Colheita confirmada para julho',
-                'conteudo' => 'A tradicional Festa da Colheita está confirmada para o dia 20 de julho. Voluntários podem se inscrever pelo site.',
-                'destaque' => false,
             ],
             [
                 'titulo'   => 'Novo horário de atendimento da secretaria',

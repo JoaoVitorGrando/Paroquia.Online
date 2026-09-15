@@ -113,68 +113,6 @@ class Sprint4Test extends TestCase
             ->assertSessionHasErrors(['titulo', 'conteudo']);
     }
 
-    // ---------- Voluntários de um evento ----------
-
-    /** @test */
-    public function admin_visualiza_voluntarios_do_evento()
-    {
-        $admin  = $this->criarAdmin();
-        $user   = $this->criarUsuario(false, ['email' => 'voluntario@teste.com']);
-        $evento = Evento::create([
-            'titulo'    => 'Festa Junina',
-            'descricao' => 'Festa da comunidade.',
-            'data'      => now()->addDays(5)->toDateString(),
-        ]);
-
-        $evento->voluntarios()->attach($user->id, ['mensagem' => 'Posso ajudar na cozinha']);
-
-        $this->actingAs($admin)
-            ->get(route('admin.eventos.voluntarios', $evento->id))
-            ->assertStatus(200)
-            ->assertSee('voluntario@teste.com')
-            ->assertSee('Posso ajudar na cozinha');
-
-        // Contador clicável na listagem de eventos
-        $this->actingAs($admin)
-            ->get(route('admin.eventos'))
-            ->assertStatus(200)
-            ->assertSee(route('admin.eventos.voluntarios', $evento->id), false);
-    }
-
-    // ---------- Administrador não se inscreve ----------
-
-    /** @test */
-    public function administrador_nao_se_inscreve_em_grupo()
-    {
-        $admin = $this->criarAdmin();
-        $grupo = Grupo::create(['nome' => 'Coral', 'descricao' => 'Canto.', 'ativo' => true]);
-
-        $this->actingAs($admin)
-            ->from(route('grupos.index'))
-            ->post(route('grupos.inscrever', $grupo->id))
-            ->assertSessionHas('erro');
-
-        $this->assertDatabaseCount('inscricoes_grupo', 0);
-    }
-
-    /** @test */
-    public function administrador_nao_se_candidata_a_voluntario()
-    {
-        $admin  = $this->criarAdmin();
-        $evento = Evento::create([
-            'titulo'    => 'Quermesse',
-            'descricao' => 'Evento.',
-            'data'      => now()->addDay()->toDateString(),
-        ]);
-
-        $this->actingAs($admin)
-            ->from(route('eventos.index'))
-            ->post(route('voluntario.inscrever', $evento->id))
-            ->assertSessionHas('erro');
-
-        $this->assertDatabaseCount('voluntarios', 0);
-    }
-
     // ---------- Fotos em grupos e eventos ----------
 
     /** @test */
@@ -271,6 +209,6 @@ class Sprint4Test extends TestCase
             ->assertSee('próximos')
             ->assertSee('em destaque')
             ->assertSee('ativas')
-            ->assertSee('inscritos');
+            ->assertSee('ativos');
     }
 }

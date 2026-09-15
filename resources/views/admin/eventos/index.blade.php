@@ -18,7 +18,11 @@
 </div>
 
 @if($eventos->isEmpty())
-    <div class="alert alert-info">Nenhum evento cadastrado.</div>
+    <x-vazio icone="bi-calendar-x" titulo="Nenhum evento cadastrado">
+        <a href="{{ route('admin.eventos.criar') }}" class="btn btn-sm text-white" style="background-color:#1a3a5c;">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Cadastrar evento
+        </a>
+    </x-vazio>
 @else
     <div class="panel-card">
         <div class="table-responsive">
@@ -28,7 +32,6 @@
                         <th>Título</th>
                         <th>Data</th>
                         <th>Local</th>
-                        <th class="text-center">Voluntários</th>
                         <th class="text-center">Ações</th>
                     </tr>
                 </thead>
@@ -43,11 +46,6 @@
                             </td>
                             <td>{{ \Carbon\Carbon::parse($evento->data)->format('d/m/Y') }}</td>
                             <td>{{ $evento->local ?? 'Não informado' }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('admin.eventos.voluntarios', $evento->id) }}" class="badge bg-secondary text-decoration-none">
-                                    {{ $evento->voluntarios_count }} <i class="bi bi-eye"></i>
-                                </a>
-                            </td>
                             <td class="text-center">
                                 <a href="{{ route('admin.eventos.editar', $evento->id) }}" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="bi bi-pencil"></i> Editar

@@ -2,12 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Mail\ContatoRecebido;
 use App\Models\Evento;
 use App\Models\Grupo;
 use App\Models\Missa;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 /**
@@ -18,10 +16,8 @@ class EndToEndFluxoCompletoTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function fluxo_visitante_navega_pelo_site_e_envia_contato()
+    public function fluxo_visitante_navega_por_todo_o_site()
     {
-        Mail::fake();
-
         Evento::create([
             'titulo'    => 'Festa Junina',
             'descricao' => 'Festa da comunidade.',
@@ -47,78 +43,20 @@ class EndToEndFluxoCompletoTest extends TestCase
         $this->get(route('eventos.index'))->assertOk()->assertSee('Festa Junina');
         $this->get(route('grupos.index'))->assertOk()->assertSee('Grupo de Jovens');
         $this->get(route('avisos.index'))->assertOk();
-        $this->get(route('contato'))->assertOk();
-
-        $this->post(route('contato.enviar'), [
-            'nome'     => 'Maria Silva',
-            'email'    => 'maria@email.com',
-            'assunto'  => 'Informações',
-            'mensagem' => 'Gostaria de saber mais sobre os grupos.',
-        ])->assertRedirect();
-
-        Mail::assertSent(ContatoRecebido::class);
-    }
-
-    /** @test */
-    public function fluxo_usuario_cadastra_login_inscreve_e_voluntaria()
-    {
-        $evento = Evento::create([
-            'titulo'    => 'Retiro',
-            'descricao' => 'Retiro espiritual.',
-            'data'      => now()->addDays(10)->toDateString(),
-        ]);
-
-        $grupo = Grupo::create([
-            'nome'      => 'Apostolado',
-            'descricao' => 'Grupo de oração.',
-            'ativo'     => true,
-        ]);
-
-        $this->post(route('cadastro.store'), [
-            'name'                  => 'João Fiel',
-            'email'                 => 'joao@fiel.com',
-            'password'              => 'senha123',
-            'password_confirmation' => 'senha123',
-        ])->assertRedirect(route('login'));
-
-        $this->post(route('login.post'), [
-            'email'    => 'joao@fiel.com',
-            'password' => 'senha123',
-        ])->assertRedirect(route('missas.index'));
-
-        $this->post(route('grupos.inscrever', $grupo->id));
-        $this->assertDatabaseHas('inscricoes_grupo', [
-            'grupo_id' => $grupo->id,
-        ]);
-
-        $this->post(route('voluntario.inscrever', $evento->id), [
-            'mensagem' => 'Posso ajudar.',
-        ]);
-        $this->assertDatabaseHas('voluntarios', [
-            'evento_id' => $evento->id,
-        ]);
-
-        $this->post(route('grupos.cancelar', $grupo->id));
-        $this->assertDatabaseMissing('inscricoes_grupo', ['grupo_id' => $grupo->id]);
-
-        $this->post(route('voluntario.cancelar', $evento->id));
-        $this->assertDatabaseMissing('voluntarios', ['evento_id' => $evento->id]);
-
-        $this->post(route('logout'));
-        $this->assertGuest();
+        $this->get(route('catequese'))->assertOk();
+        $this->get(route('sacramentos'))->assertOk();
+        $this->get(route('contato'))->assertOk()->assertSee('wa.me', false);
     }
 
     /** @test */
     public function fluxo_admin_gerencia_todo_o_conteudo()
     {
-        $this->post(route('cadastro.store'), [
-            'name'                  => 'Admin Sistema',
-            'email'                 => 'admin@fluxo.com',
-            'password'              => 'senha123',
-            'password_confirmation' => 'senha123',
+        \App\Models\User::forceCreate([
+            'name'     => 'Admin Sistema',
+            'email'    => 'admin@fluxo.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('senha123'),
+            'is_admin' => true,
         ]);
-
-        \App\Models\User::where('email', 'admin@fluxo.com')->update(['is_admin' => true]);
 
         $this->post(route('login.post'), [
             'email'    => 'admin@fluxo.com',

@@ -6,7 +6,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-10">
         <h2 class="mb-1"><i class="bi bi-info-circle"></i> Sobre a Paróquia</h2>
-        <p class="text-muted mb-4">Paróquia Nossa Senhora da Glória — Pitanga, PR</p>
+        <p class="text-muted mb-4">Paróquia Nossa Senhora da Glória, Pitanga, PR</p>
 
         {{-- Carrossel de imagens da paróquia (Sprint 3) --}}
         <div id="carrosselSobre" class="carousel slide carousel-fade shadow-sm mb-4 rounded overflow-hidden"
@@ -92,31 +92,93 @@
         {{-- Identificação e endereço --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-geo-alt"></i> Paróquia Nossa Senhora da Glória — Pitanga/PR</strong>
+                <strong><i class="bi bi-geo-alt"></i> Paróquia Nossa Senhora da Glória, Pitanga/PR</strong>
             </div>
             <div class="card-body">
-                <p><strong>Endereço:</strong> Rua Conselheiro Zacarias, 295 — 85200-053 — Pitanga, Paraná</p>
-                <p><strong>Telefone:</strong> (42) 3746-1336</p>
-                <p class="mb-0"><strong>Igreja Católica Ucraniana</strong> — Rito Bizantino</p>
+                <p class="mb-1"><strong>Endereço:</strong> {{ config('paroquia.endereco.logradouro') }}, {{ config('paroquia.endereco.numero') }}, {{ config('paroquia.endereco.bairro') }}, {{ config('paroquia.endereco.cep') }}, {{ config('paroquia.endereco.cidade') }}, {{ config('paroquia.endereco.estado') }}</p>
+                <p class="mb-1"><strong>Telefone:</strong> {{ config('paroquia.telefone') }} · <strong>Celular/WhatsApp:</strong> {{ config('paroquia.celular') }}</p>
+                <p class="mb-1"><strong>E-mail:</strong> <a href="mailto:{{ config('paroquia.email') }}">{{ config('paroquia.email') }}</a></p>
+                <p class="mb-1"><strong>CNPJ:</strong> {{ config('paroquia.cnpj') }}</p>
+                <p class="mb-0"><strong>Igreja Católica Ucraniana</strong>, Rito Bizantino</p>
+            </div>
+        </div>
+
+        {{-- Padroeira --}}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header text-white" style="background-color: #1a3a5c;">
+                <strong><i class="bi bi-star"></i> Nossa Padroeira</strong>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">A festa de <strong>Nossa Senhora da Glória</strong> é celebrada no dia
+                   <strong>15 de agosto</strong>. Em respeito à padroeira, a data é
+                   <strong>feriado municipal em Pitanga</strong>.</p>
             </div>
         </div>
 
         {{-- História --}}
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white" style="background-color: #1a3a5c;">
-                <strong><i class="bi bi-clock-history"></i> História da Paróquia</strong>
+                <strong><i class="bi bi-clock-history"></i> A comunidade ucraniana em Pitanga</strong>
             </div>
             <div class="card-body">
-                <p>A Paróquia Nossa Senhora da Glória foi fundada em <strong>16 de agosto de 1952</strong>,
-                   pelo Decreto nº 01/52, expedido por Sua Eminência <strong>Dom Jaime de Barros Cardeal Câmara</strong>.</p>
-                <p>Ao longo de mais de 70 anos, três igrejas marcaram a história da paróquia:</p>
-                <ul>
-                    <li><strong>1ª igreja:</strong> construída entre 1933 e 1940</li>
+                <p>Pitanga fica no centro do Paraná e, no início, chamava-se <strong>Serra da Pitanga</strong>.
+                   A colonização começou em <strong>1924</strong>. As primeiras famílias ucranianas vieram de
+                   Prudentópolis: <strong>Frederico Repula, Miguel Hulek e Fernando Maiko</strong>.</p>
+
+                <p>O primeiro missionário foi o <strong>Pe. Marciano Skhirpan, OSBM</strong>, que vinha de
+                   Prudentópolis montado a cavalo e se hospedava na casa da família de Frederico e Tecla Repula.
+                   No começo, celebrava na igreja católica romana; depois foi construída uma capela perto da casa
+                   de Frederico, abençoada pelo <strong>Monsenhor João Buchko</strong>.</p>
+
+                <p>Como a capela não comportava tanta gente, o Pe. Marciano e o Pe. Paulo, da Igreja Latina,
+                   foram até Guarapuava (Pitanga pertencia a Guarapuava naquela época) falar com o prefeito,
+                   que cedeu duas áreas maiores da cidade. A comunidade Santana escolheu o seu local, e ficou
+                   para a comunidade ucraniana o ponto mais alto: o nosso terreno de hoje.</p>
+
+                <p>Anos depois, com o falecimento do Pe. Marciano, chegou o <strong>Pe. Orestes Carpilhuk</strong>,
+                   também vindo da Ucrânia. Padre jovem e disposto, gostava de andar a cavalo; os escritos contam
+                   que o seu cavalo era preto, com uma estrela branca na testa. Em <strong>1939</strong> o Pe. Orestes
+                   organizou a comissão da igreja e deu início à <strong>primeira igreja de madeira</strong>. Em
+                   <strong>1943</strong> a comunidade passou a ser administrada pelo <strong>Pe. José Martenetz</strong>,
+                   depois <strong>Bispo Dom José</strong>.</p>
+
+                <p>Ao longo de todos esses anos, a comunidade sempre teve acompanhamento espiritual por meio das
+                   <strong>Santas Missões</strong>, realizadas em 1950, 1960, 1972, 1992, 2005, 2015 e 2024.</p>
+
+                <p>As <strong>Irmãs Servas de Maria Imaculada (SMI)</strong> exercem grande trabalho pastoral na
+                   paróquia e nas demais capelas, acompanhando crianças, adolescentes, jovens e o Apostolado da
+                   Oração. Desde o início até hoje, cada sacerdote que atendeu a comunidade lançou a semente da
+                   Palavra de Deus no coração de muitas pessoas, e essa semente germinou, produziu e continua
+                   produzindo bons frutos. Daquela época até os dias de hoje a comunidade se estruturou pastoral
+                   e economicamente, e a <strong>nossa igreja é considerada um dos pontos turísticos de Pitanga</strong>.</p>
+
+                <p class="text-muted small mb-0">
+                    <i class="bi bi-journal-text"></i>
+                    Texto baseado no registro histórico escrito pela própria comunidade ucraniana de Pitanga.
+                </p>
+            </div>
+        </div>
+
+        {{-- Linha do tempo --}}
+        <div class="card shadow-sm mb-4">
+            <div class="card-header text-white" style="background-color: #1a3a5c;">
+                <strong><i class="bi bi-signpost-split"></i> Linha do tempo</strong>
+            </div>
+            <div class="card-body">
+                <ul class="mb-3">
+                    <li><strong>1924</strong>: início da colonização; chegam as primeiras famílias ucranianas vindas de Prudentópolis</li>
+                    <li><strong>1939</strong>: o Pe. Orestes Carpilhuk organiza a comissão e inicia a primeira igreja, de madeira</li>
+                    <li><strong>1943</strong>: a comunidade passa a ser administrada pelo Pe. José Martenetz, depois Bispo Dom José</li>
+                    <li><strong>1952</strong>: criação da paróquia pelo Decreto nº 01/52, expedido por Dom Jaime de Barros Cardeal Câmara</li>
+                    <li><strong>1974</strong>: o Bispo Dom Efraim faz a bênção da pedra fundamental da igreja atual</li>
+                    <li><strong>16 de agosto de 1981</strong>: inauguração da igreja atual pelo <strong>Bispo Dom Efraim Basílio Krevey, SBM</strong>, com a presença de 22 sacerdotes e de fiéis de Pitanga e de outras localidades</li>
+                </ul>
+                <p class="mb-1"><strong>As três igrejas da comunidade</strong></p>
+                <ul class="mb-0">
+                    <li><strong>1ª igreja:</strong> de madeira, iniciada em 1939</li>
                     <li><strong>2ª igreja:</strong> construída entre 1953 e 1955</li>
                     <li><strong>Igreja atual:</strong> em alvenaria, construída entre 1974 e 1981</li>
                 </ul>
-                <p class="mb-0">Fundada por imigrantes ucranianos e seus descendentes, a paróquia mantém viva a tradição
-                   religiosa e cultural ucraniana, sendo um espaço de fé, acolhimento e integração para toda a comunidade.</p>
             </div>
         </div>
 
@@ -156,8 +218,8 @@
             <div class="card-body">
                 <ul class="mb-0">
                     <li>Residência Paroquial</li>
-                    <li>Convento das <strong>Irmãs Servas de Maria Imaculada</strong> em Pitanga e em Palmital — dirigem duas escolas de 1º Grau e Pré-Primário em Pitanga, PR</li>
-                    <li>Residência das <strong>Catequistas do Sagrado Coração de Jesus</strong>, estabelecida em Ivaiporã, PR — dirigem uma escola de 1º Grau de sua propriedade</li>
+                    <li>Convento das <strong>Irmãs Servas de Maria Imaculada</strong> em Pitanga e em Palmital, onde dirigem duas escolas de 1º Grau e Pré-Primário em Pitanga, PR</li>
+                    <li>Residência das <strong>Catequistas do Sagrado Coração de Jesus</strong>, estabelecida em Ivaiporã, PR, onde dirigem uma escola de 1º Grau de sua propriedade</li>
                 </ul>
             </div>
         </div>
@@ -169,8 +231,8 @@
             </div>
             <div class="card-body">
                 <h6 class="fw-bold" style="color:#1a3a5c;">Catequese</h6>
-                <p>Realiza-se aos sábados e domingos, ministrada pelas Irmãs Servas de Maria Imaculada,
-                   Catequistas do Sagrado Coração e por catequistas leigas.</p>
+                <p>Realiza-se <strong>somente aos sábados, das 8h30 às 11h30</strong>, ministrada pelas
+                   Irmãs Servas de Maria Imaculada, Catequistas do Sagrado Coração e por catequistas leigas.</p>
 
                 <h6 class="fw-bold mt-3" style="color:#1a3a5c;">Cultos e Devoções Tradicionais</h6>
                 <ul>

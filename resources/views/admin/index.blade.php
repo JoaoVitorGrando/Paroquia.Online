@@ -63,7 +63,7 @@
                 </div>
                 <i class="bi bi-people fs-4" style="color:#f0d080;"></i>
             </div>
-            <div class="stat-extra mt-2"><i class="bi bi-arrow-right-short"></i>{{ $totalInscritos }} inscritos</div>
+            <div class="stat-extra mt-2"><i class="bi bi-arrow-right-short"></i>{{ $gruposAtivos }} ativos</div>
         </div>
     </div>
 </div>
@@ -95,29 +95,26 @@
         </div>
     </div>
 
-    {{-- Grupos com mais inscritos --}}
+    {{-- Horários de missa ativos --}}
     <div class="col-lg-6">
         <div class="panel-card h-100">
             <div class="panel-head d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-bar-chart"></i> Grupos com mais inscritos</span>
-                <a href="{{ route('admin.grupos') }}" class="small text-decoration-none">Gerenciar</a>
+                <span><i class="bi bi-clock"></i> Horários de missa ativos</span>
+                <a href="{{ route('admin.missas') }}" class="small text-decoration-none">Gerenciar</a>
             </div>
             <div class="panel-body">
-                @php $maior = $gruposPopulares->max('inscritos_count') ?: 1; @endphp
-                @forelse($gruposPopulares as $grupo)
-                    <div class="{{ $loop->last ? '' : 'mb-3' }}">
-                        <div class="d-flex justify-content-between small">
-                            <span>{{ $grupo->nome }}</span>
-                            <strong style="color:#1a3a5c;">{{ $grupo->inscritos_count }}</strong>
-                        </div>
-                        <div class="progress mt-1" style="height:8px;">
-                            <div class="progress-bar" role="progressbar"
-                                 style="background-color:#1a3a5c; width: {{ round(($grupo->inscritos_count / $maior) * 100) }}%;"
-                                 aria-valuenow="{{ $grupo->inscritos_count }}" aria-valuemin="0" aria-valuemax="{{ $maior }}"></div>
+                @forelse($proximasMissas as $missa)
+                    <div class="d-flex align-items-center gap-3 {{ $loop->last ? '' : 'mb-3' }}">
+                        <span class="badge" style="background-color:#eaf0fb; color:#1a3a5c;">
+                            {{ \Carbon\Carbon::parse($missa->horario)->format('H:i') }}
+                        </span>
+                        <div>
+                            <strong>{{ $missa->dia_semana }}</strong>
+                            <div class="small text-muted">{{ $missa->local ?? 'Igreja matriz' }}</div>
                         </div>
                     </div>
                 @empty
-                    <p class="text-muted mb-0">Nenhum grupo cadastrado.</p>
+                    <p class="text-muted mb-0">Nenhum horário ativo.</p>
                 @endforelse
             </div>
         </div>

@@ -2,101 +2,87 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Hash;
+use Tests\Concerns\CriaUsuarios;
 use Tests\TestCase;
 
 /**
- * US016 - Sprint 3
- * Testes do fluxo de autenticação (cadastro, login, logout).
+ * Acesso administrativo.
+ *
+ * O site e informativo e nao possui cadastro publico: o unico login existente
+ * e o do administrador da paroquia.
  */
 class AuthControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, CriaUsuarios;
 
     /** @test */
-    public function tela_de_cadastro_carrega_corretamente()
+    public function nao_existe_rota_de_cadastro_publico()
     {
-        $response = $this->get(route('cadastro.form'));
-        $response->assertStatus(200);
-        $response->assertSee('Cadastr', false); // "Cadastrar" / "Cadastro"
+        $this->assertFalse(
+            \Illuminate\Support\Facades\Route::has('cadastro.form'),
+            'O cadastro publico foi removido do produto.'
+        );
+
+        $this->get('/cadastro')->assertNotFound();
     }
 
     /** @test */
-    public function usuario_consegue_se_cadastrar_com_dados_validos()
+    public function tela_de_login_carrega_como_area_administrativa()
     {
-        $response = $this->post(route('cadastro.store'), [
-            'name'                  => 'Maria Teste',
-            'email'                 => 'maria@teste.com',
-            'password'              => 'senha123',
-            'password_confirmation' => 'senha123',
-        ]);
-
-        $this->assertDatabaseHas('users', ['email' => 'maria@teste.com']);
-        $response->assertRedirect();
+        $this->get(route('login'))
+            ->assertStatus(200)
+            ->assertSee('Acesso administrativo');
     }
 
     /** @test */
-    public function cadastro_falha_quando_senhas_nao_conferem()
+    public function administrador_entra_e_cai_no_painel()
     {
-        $response = $this->from(route('cadastro.form'))->post(route('cadastro.store'), [
-            'name'                  => 'João Teste',
-            'email'                 => 'joao@teste.com',
-            'password'              => 'senha123',
-            'password_confirmation' => 'outra-senha',
-        ]);
+        $admin = $this->criarAdmin();
 
-        $response->assertSessionHasErrors('password');
-        $this->assertDatabaseMissing('users', ['email' => 'joao@teste.com']);
-    }
-
-    /** @test */
-    public function login_com_credenciais_validas_autentica_usuario()
-    {
-        User::create([
-            'name'     => 'Pedro Login',
-            'email'    => 'pedro@teste.com',
-            'password' => Hash::make('senha123'),
-        ]);
-
-        $response = $this->post(route('login.post'), [
-            'email'    => 'pedro@teste.com',
+        $this->post(route('login.post'), [
+            'email'    => $admin->email,
             'password' => 'senha123',
-        ]);
+        ])->assertRedirect(route('admin.index'));
 
         $this->assertAuthenticated();
-        $response->assertRedirect();
     }
 
     /** @test */
     public function login_falha_com_senha_incorreta()
     {
-        User::create([
-            'name'     => 'Ana Login',
-            'email'    => 'ana@teste.com',
-            'password' => Hash::make('senha123'),
-        ]);
+        $admin = $this->criarAdmin();
 
-        $response = $this->post(route('login.post'), [
-            'email'    => 'ana@teste.com',
+        $this->post(route('login.post'), [
+            'email'    => $admin->email,
             'password' => 'errada',
-        ]);
+        ])->assertSessionHas('erro');
 
         $this->assertGuest();
-        $response->assertSessionHas('erro');
     }
 
     /** @test */
-    public function logout_desautentica_usuario()
+    public function conta_sem_permissao_de_admin_e_recusada()
     {
-        $user = User::create([
-            'name'     => 'Carlos Logout',
-            'email'    => 'carlos@teste.com',
-            'password' => Hash::make('senha123'),
-        ]);
+        $comum = $this->criarUsuario(false);
 
-        $this->actingAs($user)->post(route('logout'));
+        $this->post(route('login.post'), [
+            'email'    => $comum->email,
+            'password' => 'senha123',
+        ])->assertSessionHas('erro');
+
+        $this->assertGuest();
+    }
+
+    /** @test */
+    public function logout_encerra_a_sessao_e_volta_para_a_home()
+    {
+        $admin = $this->criarAdmin();
+
+        $this->actingAs($admin)
+            ->post(route('logout'))
+            ->assertRedirect(route('home'));
+
         $this->assertGuest();
     }
 }

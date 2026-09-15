@@ -6,7 +6,7 @@
 <div class="admin-topbar d-flex flex-wrap align-items-center gap-3">
     <span class="topbar-icon"><i class="bi bi-heart"></i></span>
     <div class="me-auto">
-        <h2>Batizados e casamentos</h2>
+        <h2>Batismo e casamento</h2>
         <p class="topbar-sub">Como agendar e quais documentos são necessários</p>
     </div>
 </div>
@@ -24,21 +24,27 @@
 @php
     $sacramentos = [
         [
-            'chave'  => 'batizado',
-            'titulo' => 'Batizado',
+            'chave'  => 'batismo',
+            'titulo' => 'Batismo com Crisma',
             'icone'  => 'bi-droplet',
-            'texto'  => 'O batismo é a porta de entrada na vida cristã. Os pais e padrinhos participam de uma preparação antes da celebração.',
+            'texto'  => 'No rito bizantino ucraniano, o batismo e a crisma são celebrados na mesma cerimônia. Os batizados acontecem aos sábados de manhã e devem ser agendados com antecedência na secretaria paroquial.',
             'passos' => [
-                'Procure a secretaria paroquial para informar o interesse.',
-                'Entregue a documentação dos pais, do padrinho e da madrinha.',
-                'Participe do encontro de preparação para pais e padrinhos.',
-                'Confirme a data da celebração com a secretaria.',
+                'Procure a secretaria paroquial para informar o interesse e agendar a data.',
+                'Reúna a documentação da criança, dos pais e dos padrinhos.',
+                'Confirme com a secretaria a data e o horário da celebração, sempre em um sábado de manhã.',
             ],
             'documentos' => [
-                'Certidão de nascimento da criança',
-                'Documento com foto dos pais',
-                'Documento com foto dos padrinhos',
-                'Comprovante de endereço',
+                'Certidão de nascimento da criança (cópia)',
+                'Se os pais não participam da Paróquia Nossa Senhora da Glória: autorização da paróquia onde participam',
+                'Se os padrinhos não participam da Paróquia Nossa Senhora da Glória: autorização da paróquia onde participam',
+                'Padrinhos casados: cópia da certidão de casamento religioso',
+                'Padrinhos solteiros: cópia do comprovante de crisma',
+            ],
+            'regras' => [
+                'Padrinhos casados devem ser casados perante a Igreja.',
+                'Padrinhos solteiros devem ser crismados.',
+                'Não são aceitos, em hipótese alguma, padrinhos que vivem amasiados ou casados apenas no civil.',
+                'Os batizados são realizados aos sábados de manhã e precisam ser agendados com antecedência.',
             ],
         ],
         [
@@ -85,11 +91,24 @@
                     </ol>
 
                     <h6 style="color:#1a3a5c;">Documentos</h6>
-                    <ul class="mb-4">
+                    <ul class="mb-3">
                         @foreach($s['documentos'] as $doc)
                             <li>{{ $doc }}</li>
                         @endforeach
                     </ul>
+
+                    @if(!empty($s['regras']))
+                        <h6 style="color:#1a3a5c;">Condições dos padrinhos e da celebração</h6>
+                        <ul class="mb-4">
+                            @foreach($s['regras'] as $regra)
+                                <li>{{ $regra }}</li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="small text-muted mb-4">
+                            Lista de referência: confirme os documentos com a secretaria paroquial.
+                        </p>
+                    @endif
 
                     <div class="mt-auto">
                         <x-whatsapp-btn
@@ -106,9 +125,9 @@
 {{-- Rodapé da página: atendimento --}}
 <div class="panel-card mt-4">
     <div class="panel-body d-flex flex-wrap align-items-center gap-3 small text-muted">
-        <span><i class="bi bi-clock"></i> Atendimento: segunda a sexta, 09h às 12h e 14h às 17h</span>
+        <span><i class="bi bi-clock"></i> Atendimento: {{ mb_strtolower(config('paroquia.atendimento.dias')) }}, {{ config('paroquia.atendimento.horario') }}</span>
         <span><i class="bi bi-telephone"></i> {{ config('paroquia.telefone') }}</span>
-        <span><i class="bi bi-geo-alt"></i> Caixa Postal, 10 — Pitanga/PR</span>
+        <span><i class="bi bi-geo-alt"></i> Caixa Postal 10, Pitanga/PR</span>
         <a href="{{ route('contato') }}" class="btn btn-sm btn-outline-secondary ms-auto">
             <i class="bi bi-envelope"></i> Outras formas de contato
         </a>

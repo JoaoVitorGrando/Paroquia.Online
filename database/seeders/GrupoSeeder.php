@@ -33,7 +33,7 @@ class GrupoSeeder extends Seeder
                 'descricao'       => 'Formação religiosa para crianças e adolescentes que desejam receber os sacramentos.',
                 'responsavel'     => 'Marta Kovalenko',
                 'dia_reuniao'     => 'Sábado',
-                'horario_reuniao' => '14:00',
+                'horario_reuniao' => '08:30',
                 'local'           => 'Sala de Catequese',
                 'imagem'          => 'images/catequese/logo-catequese.png',
             ],

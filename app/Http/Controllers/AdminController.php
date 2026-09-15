@@ -65,7 +65,7 @@ class AdminController extends Controller
         $eventosProximos  = Evento::where('data', '>=', now()->toDateString())->count();
         $avisosDestaque   = Aviso::where('destaque', true)->count();
         $missasAtivas     = Missa::where('ativo', true)->count();
-        $totalInscritos   = Grupo::withCount('inscritos')->get()->sum('inscritos_count');
+        $gruposAtivos     = Grupo::where('ativo', true)->count();
 
         // Paineis do dashboard
         $proximosEventos = Evento::where('data', '>=', now()->toDateString())
@@ -73,24 +73,22 @@ class AdminController extends Controller
             ->take(3)
             ->get();
 
-        $gruposPopulares = Grupo::withCount('inscritos')
-            ->orderByDesc('inscritos_count')
-            ->take(5)
-            ->get();
+        // Agenda da semana: proximos horarios de missa ativos
+        $proximasMissas = Missa::listarOrdenadas()->where('ativo', true)->take(5)->values();
 
         $avisosRecentes = Aviso::latest()->take(3)->get();
 
         return view('admin.index', compact(
             'totalEventos', 'totalAvisos', 'totalGrupos', 'totalMissas',
-            'eventosProximos', 'avisosDestaque', 'missasAtivas', 'totalInscritos',
-            'proximosEventos', 'gruposPopulares', 'avisosRecentes'
+            'eventosProximos', 'avisosDestaque', 'missasAtivas', 'gruposAtivos',
+            'proximosEventos', 'proximasMissas', 'avisosRecentes'
         ));
     }
 
     // US006 - Listar eventos no admin
     public function eventos()
     {
-        $eventos = Evento::withCount('voluntarios')->orderBy('data', 'desc')->get();
+        $eventos = Evento::orderBy('data', 'desc')->get();
         return view('admin.eventos.index', compact('eventos'));
     }
 
@@ -172,13 +170,6 @@ class AdminController extends Controller
         return redirect()->route('admin.eventos')->with('sucesso', 'Evento removido.');
     }
 
-    // US008 - Voluntários inscritos em um evento
-    public function voluntariosEvento($id)
-    {
-        $evento = Evento::with('voluntarios')->findOrFail($id);
-        return view('admin.eventos.voluntarios', compact('evento'));
-    }
-
     // Avisos admin
     public function avisos()
     {
@@ -246,7 +237,7 @@ class AdminController extends Controller
     // ========================================
     public function grupos()
     {
-        $grupos = Grupo::withCount('inscritos')->orderBy('nome')->get();
+        $grupos = Grupo::orderBy('nome')->get();
         return view('admin.grupos.index', compact('grupos'));
     }
 
@@ -333,15 +324,8 @@ class AdminController extends Controller
     {
         $grupo = Grupo::findOrFail($id);
         $this->removerImagem($grupo->imagem);
-        $grupo->inscritos()->detach();
         $grupo->delete();
         return redirect()->route('admin.grupos')->with('sucesso', 'Grupo removido.');
-    }
-
-    public function inscritosGrupo($id)
-    {
-        $grupo = Grupo::with('inscritos')->findOrFail($id);
-        return view('admin.grupos.inscritos', compact('grupo'));
     }
 
     // ========================================

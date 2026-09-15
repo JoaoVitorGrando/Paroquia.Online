@@ -6,7 +6,6 @@ use App\Http\Controllers\MissaController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GrupoController;
-use App\Http\Controllers\VoluntarioController;
 use App\Http\Controllers\AvisoController;
 use App\Http\Controllers\AdminController;
 
@@ -16,7 +15,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Sobre e Contato
 Route::get('/sobre', [HomeController::class, 'sobre'])->name('sobre');
 Route::get('/contato', [HomeController::class, 'contato'])->name('contato');
-Route::post('/contato', [HomeController::class, 'contatoEnviar'])->name('contato.enviar');
 
 // Catequese e Sacramentos
 Route::get('/catequese', [HomeController::class, 'catequese'])->name('catequese');
@@ -36,27 +34,14 @@ Route::get('/grupos', [GrupoController::class, 'index'])->name('grupos.index');
 // Página informativa do Grupo de Dança Folclórica (pública, sem login)
 Route::get('/grupos/danca', [GrupoController::class, 'danca'])->name('grupos.danca');
 
-// US003 - Cadastro
-Route::get('/cadastro', [AuthController::class, 'showCadastro'])->name('cadastro.form');
-Route::post('/cadastro', [AuthController::class, 'cadastrar'])->name('cadastro.store');
-
-// US004 - Login / Logout
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+// Acesso administrativo (nao ha cadastro publico: o site e informativo)
+Route::get('/login', [AuthController::class, 'showLogin'])->middleware('guest')->name('login');
+Route::post('/login', [AuthController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('login.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rotas autenticadas
-Route::middleware('auth')->group(function () {
-    // US005 - Inscrição em grupos
-    Route::post('/grupos/{id}/inscrever', [GrupoController::class, 'inscrever'])->name('grupos.inscrever');
-    Route::post('/grupos/{id}/cancelar', [GrupoController::class, 'cancelar'])->name('grupos.cancelar');
-
-    // US008 - Voluntariado em eventos
-    Route::post('/eventos/{id}/voluntario', [VoluntarioController::class, 'inscrever'])->name('voluntario.inscrever');
-    Route::post('/eventos/{id}/voluntario/cancelar', [VoluntarioController::class, 'cancelar'])->name('voluntario.cancelar');
-});
-
-// Rotas admin - US006
+// Rotas admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
 
@@ -66,7 +51,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/eventos/{id}/editar', [AdminController::class, 'editarEvento'])->name('eventos.editar');
     Route::put('/eventos/{id}', [AdminController::class, 'atualizarEvento'])->name('eventos.atualizar');
     Route::delete('/eventos/{id}', [AdminController::class, 'excluirEvento'])->name('eventos.excluir');
-    Route::get('/eventos/{id}/voluntarios', [AdminController::class, 'voluntariosEvento'])->name('eventos.voluntarios');
 
     Route::get('/avisos', [AdminController::class, 'avisos'])->name('avisos');
     Route::get('/avisos/criar', [AdminController::class, 'criarAviso'])->name('avisos.criar');
@@ -83,7 +67,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/grupos/{id}', [AdminController::class, 'atualizarGrupo'])->name('grupos.atualizar');
     Route::patch('/grupos/{id}/alternar', [AdminController::class, 'alternarGrupo'])->name('grupos.alternar');
     Route::delete('/grupos/{id}', [AdminController::class, 'excluirGrupo'])->name('grupos.excluir');
-    Route::get('/grupos/{id}/inscritos', [AdminController::class, 'inscritosGrupo'])->name('grupos.inscritos');
 
     // US014 - Gerenciamento de Missas (Sprint 3)
     Route::get('/missas', [AdminController::class, 'missas'])->name('missas');

@@ -38,6 +38,26 @@
 </div>
 @endif
 
+{{-- Matrículas e rematrículas --}}
+<div class="panel-card mb-4" style="background-color:#fdf9ef; border-color:#e6cf8f;">
+    <div class="panel-body d-flex flex-wrap align-items-center gap-3">
+        <span class="topbar-icon" style="background-color:#f0d080; color:#5c4600;">
+            <i class="bi bi-pencil-square"></i>
+        </span>
+        <div class="me-auto">
+            <strong style="color:#1a3a5c;">Matrículas e rematrículas 2026</strong>
+            <p class="small text-muted mb-0">
+                As inscrições do Grupo Folclórico Ucraniano Kyiv são feitas por um formulário
+                on-line. Em caso de dúvida, fale conosco pelo WhatsApp.
+            </p>
+        </div>
+        <a href="{{ config('paroquia.formularios.matricula_danca') }}" target="_blank" rel="noopener"
+           class="btn text-white" style="background-color:#1a3a5c;">
+            <i class="bi bi-box-arrow-up-right"></i> Fazer a matrícula
+        </a>
+    </div>
+</div>
+
 <div class="row g-4">
     {{-- História --}}
     <div class="col-lg-8">
@@ -53,7 +73,7 @@
                 </p>
                 <p>
                     Hoje o grupo reúne cerca de <strong>110 integrantes</strong>, organizados nas
-                    categorias pré-infantil, infantil, juvenil/adulto e veteranos — mantendo viva
+                    categorias pré-infantil, infantil, juvenil/adulto e veteranos, mantendo viva
                     a tradição de geração em geração. Trajando os coloridos vestuários típicos e
                     portando seus estandartes, o Kyiv preserva e compartilha a rica herança do
                     folclore ucraniano por meio da dança.
@@ -94,11 +114,15 @@
                     </p>
                 @endif
 
+                <a href="{{ config('paroquia.formularios.matricula_danca') }}" target="_blank" rel="noopener"
+                   class="btn w-100 mb-2 text-white" style="background-color:#1a3a5c;">
+                    <i class="bi bi-pencil-square"></i> Matrículas e rematrículas 2026
+                </a>
                 <x-whatsapp-btn
                     mensagem="Olá, vim pelo site da paróquia e gostaria de participar do Grupo Folclórico Ucraniano Kyiv."
                     rotulo="Falar pelo WhatsApp"
                     classe="btn btn-whats w-100 mb-2" />
-                <a href="https://www.instagram.com/folclorekyivpitanga/" target="_blank" rel="noopener"
+                <a href="{{ config('paroquia.redes.instagram_danca') }}" target="_blank" rel="noopener"
                    class="btn btn-outline-primary w-100">
                     <i class="bi bi-instagram"></i> @folclorekyivpitanga
                 </a>

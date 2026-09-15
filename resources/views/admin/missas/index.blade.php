@@ -18,7 +18,11 @@
 </div>
 
 @if($missas->isEmpty())
-    <div class="alert alert-info">Nenhum horário cadastrado.</div>
+    <x-vazio icone="bi-clock" titulo="Nenhum horário cadastrado">
+        <a href="{{ route('admin.missas.criar') }}" class="btn btn-sm text-white" style="background-color:#1a3a5c;">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Cadastrar horário
+        </a>
+    </x-vazio>
 @else
     <div class="panel-card">
         <div class="table-responsive">
@@ -38,8 +42,8 @@
                         <tr>
                             <td><strong>{{ $missa->dia_semana }}</strong></td>
                             <td>{{ \Carbon\Carbon::parse($missa->horario)->format('H:i') }}</td>
-                            <td>{{ $missa->local ?? '—' }}</td>
-                            <td>{{ $missa->observacao ?? '—' }}</td>
+                            <td>{{ $missa->local ?? '-' }}</td>
+                            <td>{{ $missa->observacao ?? '-' }}</td>
                             <td class="text-center">
                                 @if($missa->ativo)
                                     <span class="badge bg-success">Ativo</span>

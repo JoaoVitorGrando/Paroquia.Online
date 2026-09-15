@@ -91,16 +91,74 @@ class HomeAndPagesTest extends TestCase
     }
 
     /** @test */
-    public function visitante_nao_autenticado_e_redirecionado_ao_tentar_inscrever_em_grupo()
+    public function o_site_nao_expoe_area_de_cadastro_ou_login_no_menu()
     {
-        $this->post(route('grupos.inscrever', 1))
-            ->assertRedirect(route('login'));
+        $this->get(route('home'))
+            ->assertStatus(200)
+            ->assertDontSee('Cadastre-se')
+            ->assertDontSee(route('login'), false);
     }
 
     /** @test */
-    public function visitante_nao_autenticado_e_redirecionado_ao_tentar_voluntariado()
+    public function home_esconde_a_secao_de_eventos_quando_nao_ha_nenhum()
     {
-        $this->post(route('voluntario.inscrever', 1))
-            ->assertRedirect(route('login'));
+        $this->get(route('home'))
+            ->assertStatus(200)
+            ->assertDontSee('Próximos eventos')
+            ->assertDontSee('Nenhum evento');
+    }
+
+    /** @test */
+    public function home_esconde_as_secoes_de_avisos_e_grupos_quando_vazias()
+    {
+        $this->get(route('home'))
+            ->assertStatus(200)
+            ->assertDontSee('Avisos em destaque')
+            ->assertDontSee('Nossos grupos e pastorais');
+    }
+
+    /** @test */
+    public function paginas_de_listagem_usam_estado_vazio_discreto_sem_alerta()
+    {
+        foreach (['eventos.index', 'grupos.index', 'avisos.index', 'missas.index'] as $rota) {
+            $this->get(route($rota))
+                ->assertStatus(200)
+                ->assertDontSee('alert-info', false)
+                ->assertSee('estado-vazio', false);
+        }
+    }
+
+    /** @test */
+    public function o_rodape_traz_os_dados_institucionais_da_paroquia()
+    {
+        $this->get(route('home'))
+            ->assertStatus(200)
+            ->assertSee(config('paroquia.cnpj'))
+            ->assertSee(config('paroquia.telefone'))
+            ->assertSee(config('paroquia.email'))
+            ->assertSee(config('paroquia.redes.facebook'), false)
+            ->assertSee(config('paroquia.redes.instagram'), false);
+    }
+
+    /** @test */
+    public function a_pagina_de_contato_mostra_endereco_telefones_e_redes()
+    {
+        $this->get(route('contato'))
+            ->assertStatus(200)
+            ->assertSee(config('paroquia.endereco.logradouro'))
+            ->assertSee(config('paroquia.endereco.numero'))
+            ->assertSee(config('paroquia.endereco.cep'))
+            ->assertSee(config('paroquia.celular'))
+            ->assertSee(config('paroquia.redes.facebook'), false);
+    }
+
+    /** @test */
+    public function toda_pagina_publica_oferece_contato_por_whatsapp()
+    {
+        foreach (['home', 'missas.index', 'eventos.index', 'grupos.index', 'avisos.index', 'contato'] as $rota) {
+            $this->get(route($rota))
+                ->assertStatus(200)
+                ->assertSee('wa.me', false);
+        }
     }
 }

@@ -42,14 +42,16 @@ class AdminDashboardTest extends TestCase
     }
 
     /** @test */
-    public function login_de_usuario_comum_redireciona_para_missas()
+    public function conta_sem_permissao_de_admin_nao_entra_no_painel()
     {
         $this->criarUsuario(false, ['email' => 'fiel@paroquia.com']);
 
         $this->post(route('login.post'), [
             'email'    => 'fiel@paroquia.com',
             'password' => 'senha123',
-        ])->assertRedirect(route('missas.index'));
+        ])->assertSessionHas('erro');
+
+        $this->assertGuest();
     }
 
     /** @test */
@@ -74,21 +76,14 @@ class AdminDashboardTest extends TestCase
     }
 
     /** @test */
-    public function admin_visualiza_inscritos_do_grupo()
+    public function o_painel_nao_expoe_mais_rotas_de_inscritos_ou_voluntarios()
     {
-        $admin = $this->criarAdmin();
-        $user  = $this->criarUsuario(false, ['email' => 'inscrito@teste.com']);
-        $grupo = Grupo::create([
-            'nome'      => 'Coral',
-            'descricao' => 'Grupo de canto.',
-            'ativo'     => true,
-        ]);
-        $grupo->inscritos()->attach($user->id);
-
-        $this->actingAs($admin)
-            ->get(route('admin.grupos.inscritos', $grupo->id))
-            ->assertStatus(200)
-            ->assertSee('inscrito@teste.com');
+        foreach (['admin.grupos.inscritos', 'admin.eventos.voluntarios'] as $rota) {
+            $this->assertFalse(
+                \Illuminate\Support\Facades\Route::has($rota),
+                "A rota {$rota} deveria ter sido removida junto com as inscricoes."
+            );
+        }
     }
 
     /** @test */

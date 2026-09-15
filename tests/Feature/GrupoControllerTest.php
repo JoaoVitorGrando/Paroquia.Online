@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 /**
  * US016 - Sprint 3
- * Testes de inscrição e gerenciamento de grupos.
+ * Testes da vitrine pública de grupos e do gerenciamento pelo administrador.
  */
 class GrupoControllerTest extends TestCase
 {
@@ -18,7 +18,7 @@ class GrupoControllerTest extends TestCase
 
     private function criarUsuario(bool $admin = false): User
     {
-        return User::create([
+        return User::forceCreate([
             'name'     => $admin ? 'Admin Teste' : 'Usuário Teste',
             'email'    => $admin ? 'admin@teste.com' : 'user@teste.com',
             'password' => Hash::make('senha123'),
@@ -55,47 +55,6 @@ class GrupoControllerTest extends TestCase
     }
 
     /** @test */
-    public function usuario_autenticado_consegue_se_inscrever_em_grupo()
-    {
-        $user  = $this->criarUsuario();
-        $grupo = $this->criarGrupo();
-
-        $this->actingAs($user)->post(route('grupos.inscrever', $grupo->id));
-
-        $this->assertDatabaseHas('inscricoes_grupo', [
-            'user_id'  => $user->id,
-            'grupo_id' => $grupo->id,
-        ]);
-    }
-
-    /** @test */
-    public function usuario_nao_pode_se_inscrever_duas_vezes_no_mesmo_grupo()
-    {
-        $user  = $this->criarUsuario();
-        $grupo = $this->criarGrupo();
-
-        $this->actingAs($user)->post(route('grupos.inscrever', $grupo->id));
-        $this->actingAs($user)->post(route('grupos.inscrever', $grupo->id));
-
-        $this->assertEquals(1, $user->fresh()->grupos()->count());
-    }
-
-    /** @test */
-    public function usuario_pode_cancelar_inscricao_em_grupo()
-    {
-        $user  = $this->criarUsuario();
-        $grupo = $this->criarGrupo();
-        $user->grupos()->attach($grupo->id);
-
-        $this->actingAs($user)->post(route('grupos.cancelar', $grupo->id));
-
-        $this->assertDatabaseMissing('inscricoes_grupo', [
-            'user_id'  => $user->id,
-            'grupo_id' => $grupo->id,
-        ]);
-    }
-
-    /** @test */
     public function visitante_anonimo_nao_pode_acessar_painel_admin_de_grupos()
     {
         $response = $this->get(route('admin.grupos'));
@@ -103,12 +62,37 @@ class GrupoControllerTest extends TestCase
     }
 
     /** @test */
-    public function usuario_comum_nao_pode_acessar_painel_admin_de_grupos()
+    public function conta_sem_permissao_de_admin_nao_acessa_o_painel_de_grupos()
     {
         $user = $this->criarUsuario(false);
 
         $response = $this->actingAs($user)->get(route('admin.grupos'));
         $response->assertStatus(403);
+    }
+
+    /** @test */
+    public function pagina_do_grupo_de_danca_traz_o_formulario_de_matricula()
+    {
+        Grupo::create([
+            'nome'      => 'Grupo Folclórico Ucraniano Kyiv (Dança)',
+            'descricao' => 'Danças folclóricas ucranianas.',
+            'ativo'     => true,
+        ]);
+
+        $this->get(route('grupos.danca'))
+            ->assertStatus(200)
+            ->assertSee(config('paroquia.formularios.matricula_danca'), false)
+            ->assertSee('Matrículas e rematrículas 2026');
+    }
+
+    /** @test */
+    public function vitrine_de_grupos_oferece_contato_por_whatsapp()
+    {
+        $this->criarGrupo();
+
+        $this->get(route('grupos.index'))
+            ->assertStatus(200)
+            ->assertSee('wa.me', false);
     }
 
     /** @test */

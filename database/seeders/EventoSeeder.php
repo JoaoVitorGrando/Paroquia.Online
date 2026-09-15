@@ -11,17 +11,29 @@ class EventoSeeder extends Seeder
     {
         $eventos = [
             [
+                'titulo'    => 'Encontro Paroquial de Catequistas e Crianças da Catequese',
+                'descricao' => 'Recepção e café da manhã a partir das 8h30, na Paróquia Nossa Senhora da Glória. '
+                             . 'Palestrante para os catequistas: Padre Inácio Malinoski, OSBM. '
+                             . 'Palestrantes para as crianças: seminaristas de Ivaí. Patrocínio da paróquia. '
+                             . 'Confirme a presença até 17/10 com os padres ou pelo telefone e WhatsApp da secretaria. '
+                             . '"Deixai vir a mim os pequeninos, pois é deles o reino dos céus" (Mt 19,14).',
+                'data'      => '2026-10-24',
+                'horario'   => '08:30',
+                'local'     => 'Paróquia Nossa Senhora da Glória',
+                'imagem'    => 'images/eventos/encontro-catequistas-2026.jpg',
+            ],
+            [
                 'titulo'    => 'Festa da Colheita',
                 'descricao' => 'Celebração anual em ação de graças pela colheita. Com missa solene, apresentações culturais e almoço comunitário.',
-                'data'      => '2026-07-20',
+                'data'      => '2026-08-16',
                 'horario'   => '10:00',
                 'local'     => 'Paróquia Nossa Senhora da Glória',
             ],
             [
                 'titulo'    => 'Encontro de Catequese',
-                'descricao' => 'Reunião semanal dos grupos de catequese para crianças e adolescentes.',
-                'data'      => '2026-06-07',
-                'horario'   => '14:00',
+                'descricao' => 'Encontro semanal dos grupos de catequese, aos sábados, das 8h30 às 11h30.',
+                'data'      => '2026-06-06',
+                'horario'   => '08:30',
                 'local'     => 'Salão Paroquial',
             ],
             [
@@ -37,13 +49,6 @@ class EventoSeeder extends Seeder
                 'data'      => '2026-06-21',
                 'horario'   => '08:30',
                 'local'     => 'Igreja Matriz',
-            ],
-            [
-                'titulo'    => 'Festa Junina Paroquial',
-                'descricao' => 'Festa junina com comidas típicas, quadrilha e barracas. Aberta para toda a comunidade.',
-                'data'      => '2026-06-28',
-                'horario'   => '16:00',
-                'local'     => 'Pátio da Paróquia',
             ],
         ];
 

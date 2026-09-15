@@ -2,52 +2,40 @@
 
 namespace Tests\Feature;
 
-use App\Mail\ContatoRecebido;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 /**
- * US015 + US016 - Sprint 3
- * Testa o envio real de e-mail pelo formulário de contato.
+ * Pagina de contato.
+ *
+ * O site nao envia e-mail e nao tem formulario: a pagina apenas publica os
+ * canais diretos da secretaria (WhatsApp, telefones, e-mail e endereco).
  */
 class ContatoTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function pagina_de_contato_carrega()
+    public function pagina_de_contato_publica_os_canais_diretos()
     {
-        $this->get(route('contato'))->assertStatus(200);
+        $this->get(route('contato'))
+            ->assertStatus(200)
+            ->assertSee('wa.me', false)
+            ->assertSee(config('paroquia.telefone'))
+            ->assertSee(config('paroquia.celular'))
+            ->assertSee(config('paroquia.email'))
+            ->assertSee(config('paroquia.endereco.logradouro'));
     }
 
     /** @test */
-    public function formulario_dispara_envio_de_email_com_dados_validos()
+    public function nao_existe_formulario_nem_rota_de_envio()
     {
-        Mail::fake();
+        $this->assertFalse(
+            \Illuminate\Support\Facades\Route::has('contato.enviar'),
+            'O envio por e-mail foi removido do produto.'
+        );
 
-        $this->post(route('contato.enviar'), [
-            'nome'     => 'João Fiel',
-            'email'    => 'joao@fiel.com',
-            'assunto'  => 'Pedido de oração',
-            'mensagem' => 'Por favor, rezem pela minha família.',
-        ])->assertRedirect();
-
-        Mail::assertSent(ContatoRecebido::class, function ($mail) {
-            return $mail->emailRemetente === 'joao@fiel.com'
-                && $mail->assunto === 'Pedido de oração';
-        });
-    }
-
-    /** @test */
-    public function formulario_falha_sem_campos_obrigatorios()
-    {
-        Mail::fake();
-
-        $this->from(route('contato'))
-            ->post(route('contato.enviar'), [])
-            ->assertSessionHasErrors(['nome', 'email', 'assunto', 'mensagem']);
-
-        Mail::assertNothingSent();
+        $this->get(route('contato'))->assertDontSee('<form', false);
+        $this->post('/contato', [])->assertStatus(405);
     }
 }

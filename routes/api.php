@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth:sanctum')->get('/user', function (\Illuminate\Http\Request $request) {
-    return $request->user();
-});
+/*
+ * O Paroquia Online e um site informativo renderizado no servidor.
+ * Nao ha API publica: este arquivo existe apenas porque o framework o carrega.
+ */

@@ -18,7 +18,11 @@
 </div>
 
 @if($avisos->isEmpty())
-    <div class="alert alert-info">Nenhum aviso cadastrado.</div>
+    <x-vazio icone="bi-megaphone" titulo="Nenhum aviso cadastrado">
+        <a href="{{ route('admin.avisos.criar') }}" class="btn btn-sm text-white" style="background-color:#1a3a5c;">
+            <i class="bi bi-plus-lg" aria-hidden="true"></i> Publicar aviso
+        </a>
+    </x-vazio>
 @else
     <div class="panel-card">
         <div class="table-responsive">

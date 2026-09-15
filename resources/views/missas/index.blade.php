@@ -6,8 +6,8 @@
 <div class="admin-topbar d-flex flex-wrap align-items-center gap-3">
     <span class="topbar-icon"><i class="bi bi-clock-history"></i></span>
     <div class="me-auto">
-        <h2>Horários de missas</h2>
-        <p class="topbar-sub">Confira as celebrações da semana na nossa paróquia</p>
+        <h1>Horários de missas</h1>
+        <p class="topbar-sub">Missas e novenas da semana na nossa paróquia</p>
     </div>
 </div>
 
@@ -15,8 +15,15 @@
 @if($proximaMissa)
     <div class="proxima-missa faixa-flex mb-4">
         <div class="me-auto">
-            <div class="rotulo">Próxima missa</div>
-            <p class="valor">{{ $proximaMissa['quando'] }}, às {{ $proximaMissa['horario'] }}</p>
+            <div class="rotulo">Próxima celebração</div>
+            <p class="valor">
+                {{ $proximaMissa['quando'] }}, às {{ $proximaMissa['horario'] }}
+                @if($proximaMissa['missa']->observacao)
+                    <span class="badge align-middle" style="background-color:#f0d080; color:#1a3a5c; font-size:.55em; vertical-align:middle;">
+                        {{ $proximaMissa['missa']->observacao }}
+                    </span>
+                @endif
+            </p>
             @if($proximaMissa['missa']->local)
                 <small><i class="bi bi-geo-alt"></i> {{ $proximaMissa['missa']->local }}</small>
             @endif
@@ -29,9 +36,12 @@
 @endif
 
 @if($missas->isEmpty())
-    <div class="alert alert-info">
-        Nenhum horário cadastrado no momento.
-    </div>
+    <x-vazio icone="bi-clock" titulo="Nenhum horário publicado"
+             texto="Fale com a secretaria para confirmar os horários das celebrações.">
+        <x-whatsapp-btn
+            mensagem="Olá, vim pelo site da paróquia e gostaria de saber os horários das missas."
+            rotulo="Perguntar pelo WhatsApp" />
+    </x-vazio>
 @else
     @php
         $hojeIdx = (int) now()->dayOfWeek;
@@ -62,6 +72,9 @@
                         @endphp
                         <tr style="background-color: {{ $fundo }};">
                             <td>
+                                {{-- O dia aparece em toda linha: quando ha mais de um horario
+                                     no mesmo dia, a repeticao fica discreta em vez de deixar
+                                     a celula vazia. --}}
                                 @if($primeiraDoDia)
                                     <strong style="color:#1a3a5c;">{{ $missa->dia_semana }}</strong>
                                     @if($ehHoje)
@@ -69,11 +82,13 @@
                                     @elseif($ehDomingo)
                                         <span class="badge ms-1" style="background-color:#f0d080; color:#1a3a5c;">principal</span>
                                     @endif
+                                @else
+                                    <span class="text-muted">{{ $missa->dia_semana }}</span>
                                 @endif
                             </td>
                             <td class="fw-bold">{{ \Carbon\Carbon::parse($missa->horario)->format('H:i') }}</td>
-                            <td>{{ $missa->local ?? '—' }}</td>
-                            <td class="text-muted">{{ $missa->observacao ?? '—' }}</td>
+                            <td>{{ $missa->local ?? '-' }}</td>
+                            <td class="text-muted">{{ $missa->observacao ?? '-' }}</td>
                         </tr>
                     @endforeach
                 </tbody>

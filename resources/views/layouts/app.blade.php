@@ -23,6 +23,102 @@
         main {
             flex: 1 0 auto;
         }
+        /* ===== Tokens de design: uma fonte de verdade para cor e espaco ===== */
+        :root {
+            --azul: #1a3a5c;
+            --azul-claro: #eaf0fb;
+            --dourado: #f0d080;
+            --texto-suave: #6c757d;
+            --borda: #e6e9ef;
+            --raio: 14px;
+            --sombra: 0 2px 10px rgba(26, 58, 92, .06);
+            --espaco-secao: 2rem;
+        }
+
+        /* Foco visivel para quem navega por teclado */
+        a:focus-visible, button:focus-visible, .btn:focus-visible, input:focus-visible,
+        textarea:focus-visible, select:focus-visible {
+            outline: 3px solid #f0d080;
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+
+        /* ===== Cabecalho de secao ===== */
+        .secao-titulo {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--azul);
+        }
+        .secao-titulo .bi { color: var(--azul); margin-right: .35rem; }
+        .secao-link {
+            font-size: .88rem;
+            font-weight: 600;
+            color: var(--azul);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .secao-link::after { content: " \2192"; }
+        .secao-link:hover { text-decoration: underline; }
+
+        /* ===== Cartoes de conteudo ===== */
+        .card-titulo {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--azul);
+            margin-bottom: .5rem;
+        }
+        .card-meta { list-style: none; padding: 0; margin: 0; }
+        .card-meta li { margin-bottom: .15rem; }
+        .card-meta .bi { width: 1.1em; }
+        .card-logo {
+            height: 170px;
+            object-fit: contain;
+            padding: 14px;
+            background: #f8f9fa;
+        }
+        .card-data {
+            position: absolute;
+            top: .6rem;
+            left: .6rem;
+            background: #fff;
+            color: var(--azul);
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            padding: .35rem .5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .18);
+        }
+        .card-data small { display: block; font-weight: 600; font-size: .68rem; text-transform: uppercase; }
+        .card-aviso { border-left: 5px solid var(--dourado); }
+        .eventos-passados .card { opacity: .82; }
+        .eventos-passados .card:hover { opacity: 1; }
+
+        /* ===== Estado vazio ===== */
+        .estado-vazio {
+            border: 1px dashed #d7dde7;
+            border-radius: var(--raio);
+            background: #fbfcfe;
+            padding: 2.2rem 1.25rem;
+            color: var(--texto-suave);
+        }
+        .estado-vazio .bi { font-size: 1.9rem; color: #b9c3d1; display: block; margin-bottom: .5rem; }
+        .estado-vazio-titulo { font-weight: 600; color: var(--azul); }
+
+        /* Etiqueta do tipo de celebracao na faixa azul */
+        .etiqueta-tipo {
+            display: inline-block;
+            background: var(--dourado);
+            color: var(--azul);
+            font-size: .5em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: .3em .7em;
+            border-radius: 999px;
+            vertical-align: middle;
+        }
+
         .navbar-brand {
             display: flex;
             align-items: center;
@@ -81,59 +177,80 @@
         .navbar a:hover {
             color: #f0d080 !important;
         }
+        /* ===== Rodape minimalista: identidade, redes e um atalho ===== */
         .footer {
-            background-color: #1a3a5c;
+            background-color: var(--azul);
             color: #cfd9e6;
-            padding: 22px 0 0;
-            margin-top: 32px;
+            padding: 18px 0;
+            margin-top: 40px;
             flex-shrink: 0;
             font-size: .88rem;
         }
-        .footer a {
-            color: #cfd9e6;
-            text-decoration: none;
+        .footer a { color: #cfd9e6; text-decoration: none; }
+        .footer a:hover { color: var(--dourado); }
+        .footer-linha {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: .85rem 1.25rem;
         }
-        .footer a:hover {
-            color: #f0d080;
+        .footer-marca {
+            display: flex;
+            align-items: center;
+            gap: .7rem;
+            min-width: 0;
         }
-        .footer h6 {
-            color: #f0d080;
-            font-weight: 700;
-            font-size: .95rem;
-            letter-spacing: .3px;
-            margin-bottom: .6rem !important;
-        }
-        /* Lista de navegacao do rodape em duas colunas nas telas grandes */
-        .footer-links {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: .3rem .9rem;
-        }
-        @media (min-width: 768px) {
-            .footer-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        }
-        .footer-contato { display: grid; gap: .3rem; }
-        .footer-links li, .footer-contato li { line-height: 1.35; }
+        .footer-marca strong { color: #fff; display: block; line-height: 1.2; }
+        .footer-marca span { font-size: .78rem; color: #a9bbd0; }
         .footer-logo {
-            width: 46px;
-            height: 46px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             overflow: hidden;
-            border: 2px solid #f0d080;
+            border: 2px solid var(--dourado);
             background-color: #f4efe4;
             flex-shrink: 0;
         }
-        .footer-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+        .footer-logo img { width: 100%; height: 100%; object-fit: contain; }
+        .footer-saibamais {
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 999px;
+            padding: .38rem 1rem;
+            font-size: .82rem;
+            font-weight: 600;
+            color: #fff;
+            white-space: nowrap;
         }
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            margin-top: 16px;
-            padding: 10px 0;
-            font-size: .8rem;
+        .footer-saibamais:hover {
+            background-color: var(--dourado);
+            border-color: var(--dourado);
+            color: var(--azul);
         }
+        .footer-fim {
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            margin-top: 14px;
+            padding-top: 10px;
+            font-size: .76rem;
+            color: #a9bbd0;
+        }
+        /* Conteudo completo dentro do modal */
+        .modal-paroquia .modal-header { background-color: var(--azul); color: #fff; }
+        .modal-paroquia .modal-header .btn-close { filter: invert(1) grayscale(1) brightness(2); }
+        .modal-paroquia h6 {
+            color: var(--azul);
+            font-weight: 700;
+            font-size: .82rem;
+            letter-spacing: .6px;
+            text-transform: uppercase;
+            margin-bottom: .5rem;
+        }
+        .modal-paroquia ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .35rem; }
+        .modal-paroquia .bi { width: 1.2em; color: var(--azul); }
+        .modal-paroquia a { color: var(--azul); text-decoration: none; font-weight: 500; }
+        .modal-paroquia a:hover { text-decoration: underline; }
+        .modal-paroquia .btn-whats, .modal-paroquia .btn.text-white { font-weight: 600; }
+        .modal-paroquia .btn.text-white:hover { color: #fff; }
+        .modal-paroquia .links-rapidos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         /* Redes sociais no rodapé */
         .social-btn {
             width: 34px;
@@ -233,6 +350,9 @@
             display: grid;
             grid-template-columns: repeat(7, minmax(0, 1fr));
             gap: .5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
         .agenda-dia {
             background: #fff;
@@ -243,13 +363,15 @@
             height: 100%;
         }
         .agenda-dia .agenda-nome {
+            display: block;
             font-size: .72rem;
             font-weight: 700;
             letter-spacing: .5px;
             color: #6c757d;
             text-transform: uppercase;
         }
-        .agenda-dia .agenda-hora { font-weight: 600; color: #1a3a5c; }
+        .agenda-dia .agenda-hora { display: block; font-weight: 600; color: #1a3a5c; }
+        .agenda-dia .agenda-hora.vazio { color: #c3ccd8; }
         .agenda-dia.hoje { background-color: #1a3a5c; border-color: #1a3a5c; }
         .agenda-dia.hoje .agenda-nome, .agenda-dia.hoje .agenda-hora { color: #fff; }
         .agenda-dia.domingo { background-color: #f0d080; border-color: #e6c267; }
@@ -285,7 +407,7 @@
         .badge-dia {
             background-color: #1a3a5c;
         }
-        /* Hero da home — carrossel de imagens */
+        /* Hero da home: carrossel de imagens */
         .hero-igreja {
             position: relative;
             width: 100%;
@@ -344,7 +466,7 @@
             background-color: #e6c267;
             color: #1a3a5c;
         }
-        /* Carrossel da página Sobre — imagens inteiras (sem corte) */
+        /* Carrossel da página Sobre: imagens inteiras (sem corte) */
         #carrosselSobre {
             background-color: #1a3a5c;
         }
@@ -377,7 +499,7 @@
             padding-bottom: .5rem;
             border-bottom: 1px solid #e3e8ef;
         }
-        .section-head h5 {
+        .section-head h5, .section-head .secao-titulo {
             min-width: 0;
             font-size: 1.12rem;
         }
@@ -447,21 +569,31 @@
 
         /* ===== Ajustes de responsividade para tablet ===== */
         @media (max-width: 767.98px) {
-            .section-head h5 { font-size: 1.02rem; }
+            .section-head h5, .section-head .secao-titulo { font-size: 1.02rem; }
             .admin-topbar { padding: 14px 16px; }
             .admin-topbar h1, .admin-topbar h2 { font-size: 1.1rem; }
         }
 
         /* ===== Ajustes de responsividade para celular ===== */
         @media (max-width: 575.98px) {
-            /* Agenda semanal: mantem os 7 dias na mesma linha, so que compactos */
-            .agenda-semana { gap: .25rem; }
+            /* Agenda semanal: 7 dias na mesma linha, legiveis e com area de toque */
+            .agenda-semana { gap: .3rem; }
             .agenda-dia {
-                padding: 7px 1px;
+                padding: 9px 2px;
                 border-radius: 8px;
+                min-height: 58px;
             }
-            .agenda-dia .agenda-nome { font-size: .58rem; letter-spacing: 0; }
-            .agenda-dia .agenda-hora { font-size: .68rem; }
+            .agenda-dia .agenda-nome { font-size: .62rem; letter-spacing: 0; }
+            .agenda-dia .agenda-hora { font-size: .74rem; }
+
+            /* Secoes: titulo e atalho em linhas separadas quando falta largura */
+            .section-head { gap: .15rem .75rem; }
+            .secao-titulo { font-size: 1rem; }
+
+            /* Cartoes: imagem mais baixa para caber mais conteudo na dobra */
+            .card-foto { height: 170px; }
+            .card-logo { height: 150px; }
+            .estado-vazio { padding: 1.6rem 1rem; }
 
             /* Hero: titulo e botoes proporcionais a tela pequena */
             .hero-igreja { height: clamp(300px, 70vw, 380px); min-height: 300px; margin-bottom: 22px; }
@@ -475,10 +607,29 @@
             .proxima-missa .valor { font-size: 1.22rem; }
             .faixa-flex > .btn { width: 100%; }
 
-            /* Rodape: espacamentos menores no celular */
-            .footer { padding-top: 18px; margin-top: 24px; font-size: .85rem; }
-            .footer-bottom { text-align: center; justify-content: center !important; }
-            .footer-contato .ms-3 { margin-left: 0 !important; }
+            /* Rodape no celular: tudo empilhado e centralizado */
+            .footer { padding: 16px 0; margin-top: 28px; font-size: .85rem; }
+            .footer-linha { justify-content: center; text-align: center; }
+            .footer-marca { margin: 0 auto !important; }
+            .footer-fim { text-align: center; justify-content: center !important; }
+            .modal-paroquia .links-rapidos { grid-template-columns: 1fr; }
+        }
+
+        /* Area de toque confortavel no celular (recomendacao WCAG 2.5.8) */
+        @media (max-width: 767.98px) {
+            .btn, .nav-link, .secao-link, .modal-paroquia a { min-height: 44px; }
+            .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; }
+            .btn-sm { min-height: 40px; }
+        }
+
+        /* Respeita quem pediu menos animacao no sistema */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .001ms !important;
+            }
+            .hero-slide { transition: none !important; }
         }
 
         /* Nenhum bloco deve empurrar a pagina para os lados */
@@ -611,77 +762,132 @@
     <!-- Footer institucional -->
     <footer class="footer">
         <div class="container">
-            <div class="row g-3 g-lg-4">
-
-                {{-- Marca --}}
-                <div class="col-lg-5">
-                    <div class="d-flex align-items-center gap-3 mb-2">
-                        <span class="footer-logo">
-                            <img src="{{ asset('images/logoigreja.png') }}" alt="Logo da Paróquia Nossa Senhora da Glória">
-                        </span>
-                        <div>
-                            <strong class="text-white d-block">Paróquia Nossa Senhora da Glória</strong>
-                            <small>Igreja Católica Ucraniana · Rito Bizantino</small>
-                        </div>
-                    </div>
-                    <p class="small mb-2">
-                        Fundada em 1952 por imigrantes ucranianos, a paróquia mantém viva a tradição
-                        religiosa e cultural da comunidade de Pitanga e região.
-                    </p>
-                    <div class="d-flex gap-2">
-                        <a href="https://www.instagram.com/pnsg_1/" target="_blank" rel="noopener"
-                           class="social-btn" aria-label="Instagram da paróquia">
-                            <i class="bi bi-instagram"></i>
-                        </a>
-                        <a href="https://www.facebook.com/pnsgpitanga/?locale=pt_BR" target="_blank" rel="noopener"
-                           class="social-btn" aria-label="Facebook da paróquia">
-                            <i class="bi bi-facebook"></i>
-                        </a>
+            <div class="footer-linha">
+                <div class="footer-marca me-auto">
+                    <span class="footer-logo">
+                        <img src="{{ asset('images/logoigreja.png') }}" alt="" aria-hidden="true">
+                    </span>
+                    <div>
+                        <strong>{{ config('paroquia.nome') }}</strong>
+                        <span>{{ config('paroquia.rito') }}</span>
                     </div>
                 </div>
 
-                {{-- Navegação --}}
-                <div class="col-6 col-lg-3">
-                    <h6 class="mb-3">Navegação</h6>
-                    <ul class="list-unstyled small mb-0 footer-links">
-                        <li><a href="{{ route('home') }}">Início</a></li>
-                        <li><a href="{{ route('missas.index') }}">Horários de Missas</a></li>
-                        <li><a href="{{ route('eventos.index') }}">Eventos</a></li>
-                        <li><a href="{{ route('grupos.index') }}">Grupos</a></li>
-                        <li><a href="{{ route('catequese') }}">Catequese</a></li>
-                        <li><a href="{{ route('sacramentos') }}">Sacramentos</a></li>
-                        <li><a href="{{ route('avisos.index') }}">Avisos</a></li>
-                        <li><a href="{{ route('sobre') }}">Sobre a Paróquia</a></li>
-                    </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ config('paroquia.redes.instagram') }}" target="_blank" rel="noopener"
+                       class="social-btn" aria-label="Instagram da paróquia">
+                        <i class="bi bi-instagram" aria-hidden="true"></i>
+                    </a>
+                    <a href="{{ config('paroquia.redes.facebook') }}" target="_blank" rel="noopener"
+                       class="social-btn" aria-label="Facebook da paróquia">
+                        <i class="bi bi-facebook" aria-hidden="true"></i>
+                    </a>
+                    <button type="button" class="footer-saibamais btn"
+                            data-bs-toggle="modal" data-bs-target="#modalParoquia">
+                        Saber mais
+                    </button>
                 </div>
-
-                {{-- Contato --}}
-                <div class="col-6 col-lg-4">
-                    <h6 class="mb-3">Contato</h6>
-                    <ul class="list-unstyled small mb-0 footer-contato">
-                        <li>
-                            <i class="bi bi-geo-alt"></i> Rua Conselheiro Zacarias, 295<br>
-                            <span class="ms-3">85200-053, Pitanga, Paraná</span>
-                        </li>
-                        <li><i class="bi bi-telephone"></i> {{ config('paroquia.telefone') }}</li>
-                        <li><a href="{{ route('contato') }}"><i class="bi bi-envelope"></i> Fale conosco</a></li>
-                        <li>
-                            <a href="https://www.google.com/maps/dir/?api=1&destination=Par%C3%B3quia+Nossa+Senhora+da+Gl%C3%B3ria%2C+Pitanga+-+PR"
-                               target="_blank" rel="noopener">
-                                <i class="bi bi-map"></i> Como chegar
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
             </div>
 
-            <div class="footer-bottom d-flex flex-wrap justify-content-between gap-2">
-                <span>&copy; {{ date('Y') }} Paróquia Nossa Senhora da Glória. Todos os direitos reservados.</span>
+            <div class="footer-fim d-flex flex-wrap justify-content-between gap-2">
+                <span>&copy; {{ date('Y') }} {{ config('paroquia.nome') }} · CNPJ {{ config('paroquia.cnpj') }}</span>
                 <span>Sistema desenvolvido por alunos do curso de Engenharia de Software</span>
             </div>
         </div>
     </footer>
+
+    {{-- Todo o detalhe que antes ocupava o rodape agora mora aqui --}}
+    <div class="modal fade modal-paroquia" id="modalParoquia" tabindex="-1"
+         aria-labelledby="modalParoquiaTitulo" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-6 mb-0" id="modalParoquiaTitulo">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i> {{ config('paroquia.nome') }}
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6>Contato</h6>
+                            <ul>
+                                <li>
+                                    <i class="bi bi-geo-alt" aria-hidden="true"></i>
+                                    {{ config('paroquia.endereco.logradouro') }}, {{ config('paroquia.endereco.numero') }},
+                                    {{ config('paroquia.endereco.bairro') }}<br>
+                                    <span class="text-muted small">
+                                        {{ config('paroquia.endereco.cep') }},
+                                        {{ config('paroquia.endereco.cidade') }}, {{ config('paroquia.endereco.estado') }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="bi bi-telephone" aria-hidden="true"></i>
+                                    {{ config('paroquia.telefone') }} · {{ config('paroquia.celular') }}
+                                </li>
+                                <li>
+                                    <i class="bi bi-envelope" aria-hidden="true"></i>
+                                    <a href="mailto:{{ config('paroquia.email') }}">{{ config('paroquia.email') }}</a>
+                                </li>
+                                <li>
+                                    <i class="bi bi-clock" aria-hidden="true"></i>
+                                    {{ config('paroquia.atendimento.dias') }}, {{ config('paroquia.atendimento.horario') }}
+                                </li>
+                            </ul>
+
+                            <div class="d-flex flex-wrap gap-2 mt-3">
+                                <a href="{{ config('paroquia.mapa.rota') }}" target="_blank" rel="noopener"
+                                   class="btn btn-sm text-white" style="background-color:#1a3a5c;">
+                                    <i class="bi bi-map" aria-hidden="true"></i> Como chegar
+                                </a>
+                                <x-whatsapp-btn
+                                    mensagem="Olá, vim pelo site da paróquia e gostaria de falar com a secretaria."
+                                    rotulo="WhatsApp da secretaria"
+                                    classe="btn btn-sm btn-whats" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6>Navegação</h6>
+                            <ul class="links-rapidos">
+                                <li><a href="{{ route('home') }}">Início</a></li>
+                                <li><a href="{{ route('missas.index') }}">Horários de missas</a></li>
+                                <li><a href="{{ route('eventos.index') }}">Eventos</a></li>
+                                <li><a href="{{ route('grupos.index') }}">Grupos</a></li>
+                                <li><a href="{{ route('catequese') }}">Catequese</a></li>
+                                <li><a href="{{ route('sacramentos') }}">Sacramentos</a></li>
+                                <li><a href="{{ route('avisos.index') }}">Avisos</a></li>
+                                <li><a href="{{ route('sobre') }}">Sobre a paróquia</a></li>
+                                <li><a href="{{ route('contato') }}">Contato</a></li>
+                            </ul>
+
+                            <h6 class="mt-3">Redes sociais</h6>
+                            <ul>
+                                <li>
+                                    <i class="bi bi-instagram" aria-hidden="true"></i>
+                                    <a href="{{ config('paroquia.redes.instagram') }}" target="_blank" rel="noopener">
+                                        {{ config('paroquia.redes.instagram_user') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <i class="bi bi-facebook" aria-hidden="true"></i>
+                                    <a href="{{ config('paroquia.redes.facebook') }}" target="_blank" rel="noopener">
+                                        {{ config('paroquia.redes.facebook_user') }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="small text-muted mt-4 mb-0">
+                        Fundada em 1952 por imigrantes ucranianos, a paróquia mantém viva a tradição
+                        religiosa e cultural da comunidade de Pitanga e região.
+                        <a href="{{ route('sobre') }}">Conheça a nossa história</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

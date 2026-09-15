@@ -21,12 +21,4 @@ class Evento extends Model
     protected $casts = [
         'data' => 'date',
     ];
-
-    // US008 - Voluntarios inscritos no evento
-    public function voluntarios()
-    {
-        return $this->belongsToMany(User::class, 'voluntarios')
-                    ->withPivot('mensagem')
-                    ->withTimestamps();
-    }
 }
