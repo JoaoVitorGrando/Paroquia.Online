@@ -337,6 +337,12 @@
             background-color: #fbfcfe;
         }
         .panel-body { padding: 16px 18px; }
+        /* Cartao esticado para igualar a altura da linha: o corpo ocupa o espaco
+           que sobra abaixo do cabecalho. Sem isto o corpo assume 100% da altura do
+           cartao, soma-se ao cabecalho e vaza por baixo, ficando cortado pelo
+           overflow: hidden. Era o que escondia os botoes de WhatsApp. */
+        .panel-card.h-100 { display: flex; flex-direction: column; }
+        .panel-card.h-100 > .panel-body { flex: 1 1 auto; min-height: 0; height: auto !important; }
         .stat-card {
             background: #fff;
             border: 1px solid #e6e9ef;
@@ -419,6 +425,9 @@
             width: 100%;
             height: 190px;
             object-fit: cover;
+            /* Cartazes sao verticais e trazem o titulo no alto. Ancorar pelo topo
+               faz a miniatura mostrar o nome do evento, e nao o meio da imagem. */
+            object-position: top center;
         }
         .card-missa {
             border-left: 4px solid #1a3a5c;

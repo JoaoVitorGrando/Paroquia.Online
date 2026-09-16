@@ -1,12 +1,14 @@
 @echo off
 title Paroquia Online
 cd /d "%~dp0"
-if exist "iniciar.ps1" del /f /q "iniciar.ps1"
-if exist "CORRIGIR.bat" del /f /q "CORRIGIR.bat"
-if exist "COMO-RODAR.md" del /f /q "COMO-RODAR.md"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "$c=[IO.File]::ReadAllText('%~f0');$i=$c.LastIndexOf('#::PS::');iex $c.Substring($i+7)"
-echo.
-echo O servidor foi encerrado.
+if errorlevel 1 (
+  echo.
+  echo A instalacao nao pode ser concluida. A mensagem acima explica o motivo.
+) else (
+  echo.
+  echo O servidor foi encerrado.
+)
 pause
 exit /b
 #::PS::
@@ -15,49 +17,24 @@ $ProgressPreference = "SilentlyContinue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 $raiz = (Get-Location).Path
 
-function Info($m) { Write-Host ""; Write-Host "==> $m" -ForegroundColor Cyan }
+function Info($m)  { Write-Host ""; Write-Host "==> $m" -ForegroundColor Cyan }
 function Aviso($m) { Write-Host "    $m" -ForegroundColor Yellow }
+function Erro($m)  { Write-Host "    $m" -ForegroundColor Red }
 
-# ---------- helpers do .env ----------
-function Read-EnvLines {
-    if (-not (Test-Path ".env")) { return @() }
-    return [System.IO.File]::ReadAllLines((Join-Path $raiz ".env"), [System.Text.Encoding]::UTF8)
-}
-function Write-EnvLines($lines) {
-    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-    [System.IO.File]::WriteAllLines((Join-Path $raiz ".env"), [string[]]$lines, $utf8NoBom)
-}
-function Get-EnvValue($key) {
-    foreach ($l in (Read-EnvLines)) {
-        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=\s*(.*)$")) {
-            return $Matches[1].Trim().Trim('"')
-        }
+# Arquivos temporarios que este script pode criar. Sao apagados no final,
+# mesmo que algo de errado no meio do caminho.
+$temporarios = @(
+    (Join-Path $raiz "_checar_banco.php")
+)
+function Limpar-Temporarios {
+    foreach ($t in $temporarios) {
+        if (Test-Path $t) { Remove-Item $t -Force -ErrorAction SilentlyContinue }
     }
-    return $null
 }
-function Set-EnvValue($key, $value) {
-    $lines = @(Read-EnvLines)
-    $found = $false
-    $out = @()
-    foreach ($l in $lines) {
-        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=")) { $out += "$key=$value"; $found = $true }
-        else { $out += $l }
-    }
-    if (-not $found) { $out += "$key=$value" }
-    Write-EnvLines $out
-}
-function Disable-EnvKey($key) {
-    $lines = @(Read-EnvLines)
-    $out = @()
-    foreach ($l in $lines) {
-        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=")) { $out += ("# " + $l) } else { $out += $l }
-    }
-    Write-EnvLines $out
-}
-function Use-Sqlite {
-    Set-EnvValue "DB_CONNECTION" "sqlite"
-    foreach ($k in @("DB_HOST", "DB_PORT", "DB_DATABASE", "DB_USERNAME", "DB_PASSWORD")) { Disable-EnvKey $k }
-}
+# Se a execucao anterior foi interrompida, comeca limpando.
+Limpar-Temporarios
+
+try {
 
 Write-Host "==========================================" -ForegroundColor Yellow
 Write-Host "   PAROQUIA ONLINE - instalar e rodar" -ForegroundColor Yellow
@@ -71,17 +48,20 @@ $cmd = Get-Command php -ErrorAction SilentlyContinue
 if ($cmd) {
     try {
         $v = & $cmd.Source -r "echo PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" 2>$null
-        if ($v -match '^8\.([1-9]|\d\d)') {
+        if ($v -match '^8\.([1-9]|\d\d)' -or $v -match '^9\.') {
             $mods = & $cmd.Source -m 2>$null
             if ($mods -contains "pdo_sqlite") {
                 $phpExe = $cmd.Source
                 Info "Usando o PHP ja instalado no computador (versao $v)"
             } else {
                 Aviso "O PHP instalado (versao $v) esta sem a extensao pdo_sqlite."
-                Aviso "Vou usar uma copia portatil do PHP para nao mexer na sua instalacao."
+                Aviso "Vou usar uma copia portatil do PHP, sem mexer na sua instalacao."
             }
+        } else {
+            Aviso "O PHP instalado (versao $v) e antigo demais para o Laravel 10."
+            Aviso "Vou usar uma copia portatil do PHP, sem mexer na sua instalacao."
         }
-    } catch {}
+    } catch { }
 }
 if (-not $phpExe -and (Test-Path (Join-Path $phpDir "php.exe"))) {
     $phpExe = Join-Path $phpDir "php.exe"
@@ -89,35 +69,88 @@ if (-not $phpExe -and (Test-Path (Join-Path $phpDir "php.exe"))) {
 }
 if (-not $phpExe) {
     Info "Baixando uma copia portatil do PHP (nao instala nada no Windows)..."
-    $listUrl = "https://windows.php.net/downloads/releases/"
-    $html = (Invoke-WebRequest -Uri $listUrl -UseBasicParsing).Content
-    $file = $null
-    foreach ($pat in @('php-8\.2\.\d+-nts-Win32-vs16-x64\.zip', 'php-8\.3\.\d+-nts-Win32-vs16-x64\.zip', 'php-8\.\d+\.\d+-nts-Win32-vs1[6-9]-x64\.zip')) {
-        $m = [regex]::Matches($html, $pat)
-        if ($m.Count -gt 0) { $file = $m[0].Value; break }
+
+    # Procura um pacote do PHP para Windows, primeiro entre as versoes atuais e
+    # depois no acervo. Os padroes vao do mais especifico ao mais generico, para
+    # o script continuar funcionando conforme novas versoes forem lancadas.
+    $fontes = @(
+        "https://windows.php.net/downloads/releases/",
+        "https://windows.php.net/downloads/releases/archives/"
+    )
+    $padroes = @(
+        'php-8\.[234]\.\d+-nts-Win32-vs1[67]-x64\.zip',
+        'php-8\.\d+\.\d+-nts-Win32-vs\d\d-x64\.zip',
+        'php-[89]\.\d+\.\d+-nts-Win32-[a-z0-9]+-x64\.zip'
+    )
+    $arquivo = $null
+    $base    = $null
+    foreach ($fonte in $fontes) {
+        try { $html = (Invoke-WebRequest -Uri $fonte -UseBasicParsing -TimeoutSec 40).Content }
+        catch { Aviso "Nao consegui ler $fonte"; continue }
+        foreach ($padrao in $padroes) {
+            $m = [regex]::Matches($html, $padrao)
+            if ($m.Count -gt 0) {
+                # Entre os encontrados, fica com o nome mais recente em ordem alfabetica
+                $arquivo = ($m | ForEach-Object { $_.Value } | Sort-Object -Unique | Select-Object -Last 1)
+                $base = $fonte
+                break
+            }
+        }
+        if ($arquivo) { break }
     }
-    if (-not $file) { throw "Nao consegui localizar o pacote do PHP para Windows." }
-    $zip = Join-Path $env:TEMP $file
-    Write-Host "    baixando $file ..."
-    Invoke-WebRequest -Uri ($listUrl + $file) -OutFile $zip -UseBasicParsing
-    if (Test-Path $phpDir) { Remove-Item $phpDir -Recurse -Force }
-    Expand-Archive -Path $zip -DestinationPath $phpDir -Force
-    Remove-Item $zip -Force
-    $phpExe = Join-Path $phpDir "php.exe"
-    Info "PHP portatil instalado em php-portatil\"
+
+    if (-not $arquivo) {
+        Erro "Nao foi possivel localizar um pacote do PHP para Windows."
+        Erro "Instale o PHP 8.1 ou superior manualmente, a partir de"
+        Erro "https://windows.php.net/download/ , e rode este arquivo de novo."
+        Erro "Na instalacao, habilite a extensao pdo_sqlite no php.ini."
+        throw "PHP nao encontrado e download indisponivel."
+    }
+
+    $zip = Join-Path $env:TEMP $arquivo
+    Write-Host "    baixando $arquivo ..."
+    try {
+        Invoke-WebRequest -Uri ($base + $arquivo) -OutFile $zip -UseBasicParsing -TimeoutSec 300
+        $temp = Join-Path $env:TEMP ("php-tmp-" + [guid]::NewGuid().ToString("N"))
+        Expand-Archive -Path $zip -DestinationPath $temp -Force
+
+        # Alguns pacotes vem com tudo dentro de uma subpasta. Acha onde esta o php.exe.
+        $achado = Get-ChildItem -Path $temp -Filter "php.exe" -Recurse | Select-Object -First 1
+        if (-not $achado) { throw "O pacote baixado nao contem php.exe." }
+        $origem = $achado.Directory.FullName
+
+        if (Test-Path $phpDir) { Remove-Item $phpDir -Recurse -Force }
+        Move-Item -Path $origem -Destination $phpDir
+        $phpExe = Join-Path $phpDir "php.exe"
+        Info "PHP portatil instalado em php-portatil\"
+    } finally {
+        if (Test-Path $zip) { Remove-Item $zip -Force -ErrorAction SilentlyContinue }
+        if ($temp -and (Test-Path $temp)) { Remove-Item $temp -Recurse -Force -ErrorAction SilentlyContinue }
+    }
 }
 
 # ---------- 2. php.ini (so para o PHP portatil) ----------
 $ini = Join-Path $phpDir "php.ini"
 if ((Test-Path $phpDir) -and $phpExe.StartsWith($phpDir) -and -not (Test-Path $ini)) {
-    Copy-Item (Join-Path $phpDir "php.ini-development") $ini
-    $c = Get-Content $ini -Raw
-    $c = $c -replace '(?m)^;\s*extension_dir\s*=\s*"ext"', 'extension_dir = "ext"'
-    foreach ($e in @('openssl', 'mbstring', 'fileinfo', 'pdo_sqlite', 'sqlite3', 'curl', 'zip', 'gd', 'pdo_mysql', 'mysqli', 'exif', 'intl')) {
-        $c = $c -replace ('(?m)^;extension=' + $e + '\s*$'), ('extension=' + $e)
+    $modelo = Join-Path $phpDir "php.ini-development"
+    if (Test-Path $modelo) {
+        Copy-Item $modelo $ini
+        $c = Get-Content $ini -Raw
+        $c = $c -replace '(?m)^;\s*extension_dir\s*=\s*"ext"', 'extension_dir = "ext"'
+        foreach ($e in @('openssl','mbstring','fileinfo','pdo_sqlite','sqlite3','curl','zip','gd','pdo_mysql','mysqli','exif','intl')) {
+            $c = $c -replace ('(?m)^;extension=' + $e + '\s*$'), ('extension=' + $e)
+        }
+        Set-Content -Path $ini -Value $c -Encoding ASCII
+        Info "php.ini configurado (sqlite, mbstring, openssl, curl, zip...)"
     }
-    Set-Content -Path $ini -Value $c -Encoding ASCII
-    Info "php.ini configurado (sqlite, mbstring, openssl, curl, zip...)"
+}
+
+# Confere se o PHP escolhido realmente consegue falar com o SQLite.
+$temSqlite = (& $phpExe -m 2>$null) -contains "pdo_sqlite"
+if (-not $temSqlite) {
+    Erro "O PHP disponivel esta sem a extensao pdo_sqlite e o sistema nao roda sem ela."
+    Erro "Habilite a linha extension=pdo_sqlite no php.ini e rode este arquivo de novo."
+    throw "Extensao pdo_sqlite ausente."
 }
 
 # ---------- 3. Composer + dependencias ----------
@@ -125,16 +158,54 @@ if (-not (Test-Path ".\vendor\autoload.php")) {
     $composer = Join-Path $raiz "composer.phar"
     if (-not (Test-Path $composer)) {
         Info "Baixando o Composer..."
-        Invoke-WebRequest -Uri "https://getcomposer.org/composer.phar" -OutFile $composer -UseBasicParsing
+        Invoke-WebRequest -Uri "https://getcomposer.org/composer.phar" -OutFile $composer -UseBasicParsing -TimeoutSec 120
     }
     Info "Instalando as dependencias do Laravel (pode levar alguns minutos)..."
     & $phpExe $composer install --no-dev --no-interaction --prefer-dist --ignore-platform-req=ext-intl
-    if ($LASTEXITCODE -ne 0) { throw "Falha ao rodar o composer install." }
+    if ($LASTEXITCODE -ne 0) {
+        Erro "O composer install falhou. Verifique a conexao com a internet."
+        throw "Falha ao instalar as dependencias."
+    }
 } else {
     Info "Dependencias ja instaladas (pasta vendor)."
 }
 
-# ---------- 4. .env + chave ----------
+# ---------- 4. .env + chave da aplicacao ----------
+function Read-EnvLines {
+    if (-not (Test-Path ".env")) { return @() }
+    return [System.IO.File]::ReadAllLines((Join-Path $raiz ".env"), [System.Text.Encoding]::UTF8)
+}
+function Write-EnvLines($lines) {
+    $semBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllLines((Join-Path $raiz ".env"), [string[]]$lines, $semBom)
+}
+function Get-EnvValue($key) {
+    foreach ($l in (Read-EnvLines)) {
+        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=\s*(.*)$")) { return $Matches[1].Trim().Trim('"') }
+    }
+    return $null
+}
+function Set-EnvValue($key, $value) {
+    $out = @(); $achou = $false
+    foreach ($l in @(Read-EnvLines)) {
+        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=")) { $out += "$key=$value"; $achou = $true }
+        else { $out += $l }
+    }
+    if (-not $achou) { $out += "$key=$value" }
+    Write-EnvLines $out
+}
+function Disable-EnvKey($key) {
+    $out = @()
+    foreach ($l in @(Read-EnvLines)) {
+        if ($l -match ("^\s*" + [regex]::Escape($key) + "\s*=")) { $out += ("# " + $l) } else { $out += $l }
+    }
+    Write-EnvLines $out
+}
+function Use-Sqlite {
+    Set-EnvValue "DB_CONNECTION" "sqlite"
+    foreach ($k in @("DB_HOST","DB_PORT","DB_DATABASE","DB_USERNAME","DB_PASSWORD")) { Disable-EnvKey $k }
+}
+
 if (-not (Test-Path ".env")) {
     Copy-Item ".env.example" ".env"
     Info ".env criado a partir do .env.example"
@@ -195,22 +266,24 @@ if ($novo) {
 }
 if ($LASTEXITCODE -ne 0) { throw "Falha ao preparar o banco de dados." }
 
-# garante que o administrador exista mesmo em banco ja criado
+# Garante que a conta de administrador exista, mesmo em banco ja criado.
 & $phpExe artisan db:seed --class=AdminSeeder --force --quiet 2>$null | Out-Null
 
-# ---------- 6. Link das imagens enviadas ----------
-if (-not (Test-Path ".\public\storage")) {
-    & $phpExe artisan storage:link --quiet 2>$null | Out-Null
+# ---------- 6. Pastas de upload ----------
+foreach ($pasta in @("public\uploads\eventos", "public\uploads\grupos")) {
+    $caminho = Join-Path $raiz $pasta
+    if (-not (Test-Path $caminho)) { New-Item -ItemType Directory -Path $caminho -Force | Out-Null }
 }
 
 # ---------- 7. Subir o servidor ----------
-$porta = 8000
+$porta = $null
 for ($p = 8000; $p -lt 8020; $p++) {
     try {
         $l = New-Object System.Net.Sockets.TcpListener([System.Net.IPAddress]::Loopback, $p)
         $l.Start(); $l.Stop(); $porta = $p; break
     } catch { }
 }
+if (-not $porta) { throw "Nenhuma porta livre entre 8000 e 8019." }
 if ($porta -ne 8000) { Aviso "A porta 8000 estava ocupada. Usando a porta $porta." }
 
 $adminEmail = Get-EnvValue "ADMIN_EMAIL"; if (-not $adminEmail) { $adminEmail = "admin@paroquia.com" }
@@ -228,3 +301,14 @@ Write-Host "    Para parar o servidor, feche esta janela ou aperte Ctrl+C." -For
 Write-Host ""
 Start-Job -ScriptBlock { param($u) Start-Sleep -Seconds 5; Start-Process $u } -ArgumentList $url | Out-Null
 & $phpExe artisan serve --host=127.0.0.1 --port=$porta
+
+}
+catch {
+    Write-Host ""
+    Erro $_.Exception.Message
+    Limpar-Temporarios
+    exit 1
+}
+finally {
+    Limpar-Temporarios
+}

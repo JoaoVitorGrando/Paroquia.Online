@@ -37,15 +37,6 @@ class GrupoSeeder extends Seeder
                 'local'           => 'Sala de Catequese',
                 'imagem'          => 'images/catequese/logo-catequese.png',
             ],
-            [
-                'nome'            => 'Apostolado da Oração',
-                'descricao'       => 'Grupo de oração e espiritualidade com terço, leituras bíblicas e partilha da fé.',
-                'responsavel'     => 'Maria Bondarenko',
-                'dia_reuniao'     => 'Domingo',
-                'horario_reuniao' => '08:30',
-                'local'           => 'Igreja Matriz',
-                'imagem'          => 'images/apostolado/logo-apostolado.png',
-            ],
         ];
 
         // Atualiza os dados a cada execução (mantém a foto/infos em dia sem duplicar)

@@ -23,11 +23,23 @@ class EventoSeeder extends Seeder
                 'imagem'    => 'images/eventos/encontro-catequistas-2026.jpg',
             ],
             [
-                'titulo'    => 'Festa da Colheita',
-                'descricao' => 'Celebração anual em ação de graças pela colheita. Com missa solene, apresentações culturais e almoço comunitário.',
+                'titulo'    => 'Festa da Padroeira Nossa Senhora da Glória',
+                'descricao' => 'Festa da padroeira celebrada em dois dias, na Igreja Ucraniana de Pitanga. '
+                             . 'No sábado, 15 de agosto, tarde festiva a partir das 14h, com pastel, sonho, suspiro e bolos, '
+                             . 'e Divina Liturgia em português às 19h. '
+                             . 'No domingo, 16 de agosto, às 9h, carreata com veículos antigos levando a imagem da Padroeira, '
+                             . 'sob responsabilidade do Pitanga Volks Club e Antigos, com saída do pátio da igreja. '
+                             . 'Às 10h, Divina Liturgia, Benção Apostólica em ocasião à Padroeira, procissão no pátio com a imagem '
+                             . 'e benção de veículos. '
+                             . 'Ao meio-dia, almoço festivo com churrasco assado e desossado (R$ 70,00 o quilo), carne suína '
+                             . '(R$ 35,00 o quilo), perohê, maionese, farofa, arroz, pão e salada. '
+                             . 'Às 13h30, início do binguinho com prêmios, e venda de pastel, sonho, suspiro, bolo e bebidas '
+                             . 'durante a tarde. '
+                             . 'O conselho paroquial convida você e sua família.',
                 'data'      => '2026-08-16',
-                'horario'   => '10:00',
+                'horario'   => '09:00',
                 'local'     => 'Paróquia Nossa Senhora da Glória',
+                'imagem'    => 'images/eventos/festa-padroeira-2026.jpg',
             ],
             [
                 'titulo'    => 'Encontro de Catequese',
@@ -42,13 +54,6 @@ class EventoSeeder extends Seeder
                 'data'      => '2026-06-14',
                 'horario'   => '19:30',
                 'local'     => 'Salão Paroquial',
-            ],
-            [
-                'titulo'    => 'Apostolado da Oração',
-                'descricao' => 'Reunião do grupo Apostolado da Oração com terço, leituras e partilha espiritual.',
-                'data'      => '2026-06-21',
-                'horario'   => '08:30',
-                'local'     => 'Igreja Matriz',
             ],
         ];
 
